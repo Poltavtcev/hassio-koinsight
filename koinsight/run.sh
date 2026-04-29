@@ -1,32 +1,32 @@
-#!/usr/bin/with-contenv bashio
+#!/bin/bash
+set -e
 
-# Parse configuration
-DATA_PATH=$(bashio::config 'data_path')
-LOG_LEVEL=$(bashio::config 'log_level')
-
-# Set default data path if not specified
-if [ -z "$DATA_PATH" ]; then
-    DATA_PATH="/share/koinsight"
+CONFIG_FILE="/data/options.json"
+if [ -f "$CONFIG_FILE" ]; then
+  DATA_PATH=$(jq -r '.data_path // empty' "$CONFIG_FILE")
+  LOG_LEVEL=$(jq -r '.log_level // "info"' "$CONFIG_FILE")
+else
+  DATA_PATH=""
+  LOG_LEVEL="info"
 fi
 
-# Create data directory if it doesn't exist
+if [ -z "$DATA_PATH" ]; then
+  DATA_PATH="/share/koinsight"
+fi
+
 mkdir -p "$DATA_PATH"
 
-# Set environment variables for KoInsight
-export DATA_PATH="$DATA_PATH"
-export LOG_LEVEL="$LOG_LEVEL"
+export DATA_PATH
+export LOG_LEVEL
 
-# Log configuration
-bashio::log.info "Starting KoInsight..."
-bashio::log.info "Data path: $DATA_PATH"
-bashio::log.info "Log level: $LOG_LEVEL"
+echo "[INFO] Starting KoInsight..."
+echo "[INFO] Data path: $DATA_PATH"
+echo "[INFO] Log level: $LOG_LEVEL"
 
-# Create symlink for data persistence
 if [ ! -L "/app/data" ]; then
-    rm -rf /app/data 2>/dev/null || true
-    ln -sf "$DATA_PATH" /app/data
+  rm -rf /app/data 2>/dev/null || true
+  ln -sf "$DATA_PATH" /app/data
 fi
 
-# Start KoInsight using the original entrypoint
 cd /app
 exec node apps/server/dist/app.js

@@ -1,0 +1,4 @@
+# Home Assistant passes these as docker build-args. Rebuild the add-on after changes.
+args:
+  KOINSIGHT_REPO: https://github.com/Poltavtcev/KoInsight.git
+  KOINSIGHT_REF: master

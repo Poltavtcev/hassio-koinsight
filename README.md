@@ -1,6 +1,6 @@
 # KoInsight Home Assistant Add-ons
 
-[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A//github.com/schwarztrinker/hassio-koinsight)
+[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A//github.com/Poltavtcev/hassio-koinsight)
 
 ## About
 
@@ -18,6 +18,14 @@ This repository contains the following add-ons:
 
 _KoInsight brings your KOReader reading stats to life with a clean, web-based dashboard._
 
+## Version 0.4.0 (KoInsight from source)
+
+The add-on **builds KoInsight from Git** on your Home Assistant machine (no `ghcr.io` image pin).
+
+- Default source: **[Poltavtcev/KoInsight](https://github.com/Poltavtcev/KoInsight)** @ **`master`** (see [`koinsight/build.yaml`](koinsight/build.yaml)).
+- To use another fork or branch, edit `KOINSIGHT_REPO` / `KOINSIGHT_REF` there, then **Rebuild** the add-on in Supervisor.
+- The first install can take several minutes (clone + `npm install` + build).
+
 ## Installation
 
 Click the badge above or manually add this repository to your Home Assistant add-on store:
@@ -25,7 +33,7 @@ Click the badge above or manually add this repository to your Home Assistant add
 1. Go to **Supervisor** → **Add-on Store**
 2. Click the **⋮** menu in the top right
 3. Select **Repositories**
-4. Add repository URL: `https://github.com/schwarztrinker/hassio-koinsight`
+4. Add repository URL: `https://github.com/Poltavtcev/hassio-koinsight`
 5. Close the dialog and refresh the page
 6. Find "KoInsight" in the add-on store and install it
 
