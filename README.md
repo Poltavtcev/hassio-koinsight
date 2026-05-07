@@ -4,7 +4,7 @@
 
 ## About
 
-This repository contains Home Assistant add-ons for [KoInsight](https://github.com/GeorgeSG/KoInsight), a web-based dashboard for your KOReader reading statistics.
+This repository contains Home Assistant add-ons for [KoInsight](https://github.com/GeorgeSG/KoInsight) and [BamBuddy](https://github.com/maziggy/bambuddy).
 
 ## Add-ons
 
@@ -17,6 +17,22 @@ This repository contains the following add-ons:
 ![Supports arm64 Architecture][arm64-shield]
 
 _KoInsight brings your KOReader reading stats to life with a clean, web-based dashboard._
+
+### [Bambuddy](./bambuddy/)
+
+![Supports aarch64 Architecture][bambuddy-aarch64-shield]
+![Supports amd64 Architecture][bambuddy-amd64-shield]
+![Supports armhf Architecture][bambuddy-armhf-shield]
+![Supports armv7 Architecture][bambuddy-armv7-shield]
+![Supports i386 Architecture][bambuddy-i386-shield]
+
+_BamBuddy — print archive and management for Bambu Lab printers. This add-on is built from **`ghcr.io/maziggy/bambuddy:latest`**. After upstream releases a new image, open the add-on in Supervisor and click **Rebuild** to pull the current `latest`._
+
+[bambuddy-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[bambuddy-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+[bambuddy-armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[bambuddy-armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
+[bambuddy-i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 
 ## Version 0.4.0 (KoInsight from source)
 
@@ -35,7 +51,7 @@ Click the badge above or manually add this repository to your Home Assistant add
 3. Select **Repositories**
 4. Add repository URL: `https://github.com/Poltavtcev/hassio-koinsight`
 5. Close the dialog and refresh the page
-6. Find "KoInsight" in the add-on store and install it
+6. Find **KoInsight** or **Bambuddy (rolling)** in the add-on store and install it
 
 ## Features
 
