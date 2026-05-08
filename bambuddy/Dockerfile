@@ -2,7 +2,7 @@
 ARG BAMBUDDY_VERSION
 ARG BUILD_FROM
 
-FROM ghcr.io/maziggy/bambuddy:${BAMBUDDY_VERSION} as builder
+FROM ghcr.io/maziggy/bambuddy:${BAMBUDDY_VERSION} AS builder
 FROM $BUILD_FROM
 
 WORKDIR /app
@@ -10,6 +10,7 @@ WORKDIR /app
 # Install system dependencies
 RUN apk add --no-cache \
   build-base \
+  linux-headers \
   py3-opencv \
   curl \
   ffmpeg
