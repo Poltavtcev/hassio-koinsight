@@ -72,6 +72,20 @@ Each URL gets its own store id in Supervisor; a mismatch breaks changelog / upda
 GitHub `main` is the source of truth:  
 `https://raw.githubusercontent.com/Poltavtcev/hassio-koinsight/main/bambuddy/config.yaml`
 
+**`Failed to rebuild app` / `App …_bambuddy is not available inside store`?**  
+Supervisor stores each installed add-on against an internal store id (`<repo-hash>_<slug>`). If you **removed and re-added** this repository, **switched forks**, or Supervisor refreshed its git index, the **installed** Bambuddy entry can still point at an **old** store id — then **Rebuild**, **Update**, and **Changelog** fail even though the add-on appears in the UI.
+
+**Recovery (recommended):**
+
+1. Optional: create a **full backup** (Settings → System → Backups) if you care about BamBuddy data.
+2. **Settings → Add-ons → Bambuddy (rolling) → ⋮ → Uninstall** (remove the broken install).
+3. **Settings → Add-ons → ⋮ → Repositories** — remove `https://github.com/Poltavtcev/hassio-koinsight`, save, refresh the page.
+4. **Developer tools → YAML → Restart Home Assistant Supervisor** (or restart Supervisor from **Settings → System** if available).
+5. Add the repository again: `https://github.com/Poltavtcev/hassio-koinsight`.
+6. **Add-on Store** → install **Bambuddy (rolling)** again — this binds to the **current** store entry.
+
+After a fresh install, **Rebuild** should work. Your BamBuddy database/files normally live in the add-on’s data volume and are often kept across uninstall depending on platform — when unsure, rely on step 1.
+
 ## Features
 
 **KoInsight**
