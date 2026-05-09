@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Bambuddy (rolling)
-version: "1.1.1"
+version: "1.1.2"
 slug: bambuddy
 description: >-
   BamBuddy print archive for Bambu Lab printers. Alpine runtime reinstalls
@@ -8,11 +8,8 @@ description: >-
   LAN ports on the HA machine. Rebuild in Supervisor to refresh upstream.
 url: "https://github.com/Poltavtcev/hassio-koinsight"
 arch:
-  - armhf
-  - armv7
   - aarch64
   - amd64
-  - i386
 init: false
 host_network: true
 hassio_role: homeassistant

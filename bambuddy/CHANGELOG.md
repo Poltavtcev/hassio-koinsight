@@ -2,6 +2,12 @@
 
 # Changelog
 
+## [1.1.2] - 2026-05-09
+
+- Align with KoInsight-style Docker: **explicit** `FROM ghcr.io/home-assistant/base-python:3.13-alpine3.23` (no `$BUILD_FROM`). New Supervisor builds no longer guarantee `BUILD_FROM`, which could drop the add-on from the store.
+- **`arch`**: only **aarch64** and **amd64** — matches Home Assistant multi-arch base images (same as KoInsight). Removed armhf/armv7/i386 to avoid invalid platform combinations.
+- Removed **`build.yaml`** (labels moved into Dockerfile `LABEL`; `BAMBUDDY_VERSION` stays as `ARG` default in Dockerfile).
+
 ## [1.1.1] - 2026-05-09
 
 - Remove Docker BuildKit `RUN --mount=type=cache` from the Dockerfile. Home Assistant Supervisor may silently omit add-ons whose Dockerfile uses unsupported syntax, which hid Bambuddy when KoInsight still appeared in the same repository.

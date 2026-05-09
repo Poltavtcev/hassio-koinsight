@@ -26,17 +26,11 @@ _KoInsight brings your KOReader reading stats to life with a clean, web-based da
 
 ![Supports aarch64 Architecture][bambuddy-aarch64-shield]
 ![Supports amd64 Architecture][bambuddy-amd64-shield]
-![Supports armhf Architecture][bambuddy-armhf-shield]
-![Supports armv7 Architecture][bambuddy-armv7-shield]
-![Supports i386 Architecture][bambuddy-i386-shield]
 
-_BamBuddy — print archive and management for Bambu Lab printers. This add-on builds from **`ghcr.io/maziggy/bambuddy:latest`** with optional **Rebuild** in Supervisor to refresh upstream._
+_BamBuddy — print archive and management for Bambu Lab printers. This add-on builds from **`ghcr.io/maziggy/bambuddy:latest`** with optional **Rebuild** in Supervisor to refresh upstream. Same **aarch64 / amd64** targets as KoInsight (HA multi-arch base images)._
 
 [bambuddy-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [bambuddy-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[bambuddy-armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
-[bambuddy-armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
-[bambuddy-i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 
 ## KoInsight: build from source (rolling)
 
@@ -86,7 +80,7 @@ Supervisor stores each installed add-on against an internal store id (`<repo-has
 
 After a fresh install, **Rebuild** should work. Your BamBuddy database/files normally live in the add-on’s data volume and are often kept across uninstall depending on platform — when unsure, rely on step 1.
 
-**Only KoInsight appears from this repo, not Bambuddy?** See Supervisor logs (**Settings → System → Logs** → choose **Supervisor**). Invalid `config.yaml` schema or an unsupported **Dockerfile** line can cause Supervisor to **skip** one add-on without a UI error. This repository previously used BuildKit-only `RUN --mount=…` in `bambuddy/Dockerfile` (removed in **1.1.1**). Refresh the repo after updating.
+**Only KoInsight appears from this repo, not Bambuddy?** See Supervisor logs (**Settings → System → Logs** → choose **Supervisor**). Common causes: invalid `schema`, unsupported **Dockerfile** syntax (e.g. BuildKit-only `RUN --mount`, fixed in **1.1.1**), **`FROM $BUILD_FROM` without a resolvable base** on newer Supervisor (**1.1.2** uses an explicit multi-arch `base-python` image like the KoInsight Dockerfile uses explicit `FROM node`), or **`arch`** listing platforms your HA base image does not publish (**1.1.2** limits to **aarch64** / **amd64**). Refresh the repo after updating.
 
 ## Features
 
