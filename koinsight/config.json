@@ -1,17 +1,14 @@
 {
   "name": "KoInsight",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "slug": "koinsight",
   "description": "Bring your KOReader reading stats to life with a clean, web-based dashboard",
   "url": "https://github.com/GeorgeSG/KoInsight",
   "startup": "application",
   "boot": "auto",
   "arch": [
-    "armhf",
-    "armv7", 
     "aarch64",
-    "amd64",
-    "i386"
+    "amd64"
   ],
   "ports": {
     "3000/tcp": 3000

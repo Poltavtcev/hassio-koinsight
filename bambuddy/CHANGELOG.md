@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.1.3] - 2026-05-09
+
+- Fix Supervisor validation: **`webui` / `watchdog` must use `[PORT:8000]`**, not a literal `:8000` after `[HOST]` (regex in HA Supervisor). Restored **`ports`** so the placeholder resolves.
+
 ## [1.1.2] - 2026-05-09
 
 - Align with KoInsight-style Docker: **explicit** `FROM ghcr.io/home-assistant/base-python:3.13-alpine3.23` (no `$BUILD_FROM`). New Supervisor builds no longer guarantee `BUILD_FROM`, which could drop the add-on from the store.
