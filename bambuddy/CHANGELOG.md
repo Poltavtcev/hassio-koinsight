@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.1.1] - 2026-05-09
+
+- Remove Docker BuildKit `RUN --mount=type=cache` from the Dockerfile. Home Assistant Supervisor may silently omit add-ons whose Dockerfile uses unsupported syntax, which hid Bambuddy when KoInsight still appeared in the same repository.
+
 ## [1.1.0] - 2026-05-09
 
 - Version bump only — helps Home Assistant Supervisor pick up catalog changes if the add-on store was stuck showing an older git snapshot (see repository README troubleshooting).

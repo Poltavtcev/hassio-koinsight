@@ -15,10 +15,9 @@ RUN apk add --no-cache \
   curl \
   ffmpeg
 
-# Install Python dependencies with cache mount
+# Install Python dependencies (avoid BuildKit-only RUN --mount; HA may skip the add-on in the store).
 COPY --from=builder /app/requirements.txt ./
-RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install --root-user-action=ignore -r requirements.txt
+RUN pip install --root-user-action=ignore -r requirements.txt
 
 COPY --from=builder /app /app
 

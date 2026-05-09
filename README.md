@@ -86,6 +86,8 @@ Supervisor stores each installed add-on against an internal store id (`<repo-has
 
 After a fresh install, **Rebuild** should work. Your BamBuddy database/files normally live in the add-on’s data volume and are often kept across uninstall depending on platform — when unsure, rely on step 1.
 
+**Only KoInsight appears from this repo, not Bambuddy?** See Supervisor logs (**Settings → System → Logs** → choose **Supervisor**). Invalid `config.yaml` schema or an unsupported **Dockerfile** line can cause Supervisor to **skip** one add-on without a UI error. This repository previously used BuildKit-only `RUN --mount=…` in `bambuddy/Dockerfile` (removed in **1.1.1**). Refresh the repo after updating.
+
 ## Features
 
 **KoInsight**
