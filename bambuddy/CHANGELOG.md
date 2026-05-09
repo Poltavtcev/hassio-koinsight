@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.1.0] - 2026-05-09
+
+- Version bump only — helps Home Assistant Supervisor pick up catalog changes if the add-on store was stuck showing an older git snapshot (see repository README troubleshooting).
+
 ## [1.0.6] - 2026-05-09
 
 - Point add-on metadata (`url` / OCI source) at this repository (`Poltavtcev/hassio-koinsight`) so Supervisor changelog and store entries match the repo you add in the UI.

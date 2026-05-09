@@ -61,6 +61,17 @@ Click the badge above or manually add this repository to your Home Assistant add
 `https://github.com/Poltavtcev/hassio-koinsight`  
 Each URL gets its own store id in Supervisor; a mismatch breaks changelog / update detection. Remove the repo entry, reload the page (or **Check for updates**), add the URL again, restart **Home Assistant Supervisor** if needed.
 
+**Store still shows an old version (e.g. 1.0.3) while GitHub `main` is newer?** Supervisor sometimes serves a stale clone of community repositories.
+
+1. **Settings → Add-ons → ⋮ → Repositories** — remove **KoInsight & BamBuddy Add-ons**, confirm, refresh the browser.
+2. Add it again: `https://github.com/Poltavtcev/hassio-koinsight`.
+3. **Developer tools → YAML → Restart Home Assistant Supervisor** (or **Settings → System → Restart** → restart Supervisor only, if your install exposes it).
+4. Open the **Add-on Store**, find **Bambuddy (rolling)** — check the version line on the card (not only the installed instance).
+5. If there is still no **Update**, open the add-on → **Rebuild** (builds from the freshly pulled git tree).
+
+GitHub `main` is the source of truth:  
+`https://raw.githubusercontent.com/Poltavtcev/hassio-koinsight/main/bambuddy/config.yaml`
+
 ## Features
 
 **KoInsight**
