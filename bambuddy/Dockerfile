@@ -1,9 +1,30 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
-# Runtime matches upstream BamBuddy (python:3.13-slim / Debian) — no Alpine pip rebuild.
-ARG BAMBUDDY_VERSION=latest
-FROM ghcr.io/maziggy/bambuddy:${BAMBUDDY_VERSION}
+ARG BAMBUDDY_VERSION
+ARG BUILD_FROM
 
-COPY run.sh /run.sh
-RUN chmod +x /run.sh
+FROM ghcr.io/maziggy/bambuddy:${BAMBUDDY_VERSION} AS builder
+FROM $BUILD_FROM
 
-CMD ["/run.sh"]
+WORKDIR /app
+
+# Install system dependencies
+RUN apk add --no-cache \
+  build-base \
+  linux-headers \
+  py3-opencv \
+  curl \
+  ffmpeg
+
+# Install Python dependencies with cache mount
+COPY --from=builder /app/requirements.txt ./
+RUN --mount=type=cache,target=/root/.cache/pip \
+  pip install --root-user-action=ignore -r requirements.txt
+
+COPY --from=builder /app /app
+
+ENV PYTHONUNBUFFERED=1
+ENV DATA_DIR=/app/data
+ENV LOG_DIR=/app/logs
+
+# Copy root filesystem
+COPY rootfs /
