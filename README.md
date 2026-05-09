@@ -57,6 +57,10 @@ Click the badge above or manually add this repository to your Home Assistant add
 5. Close the dialog and refresh the page
 6. Install **KoInsight** and/or **Bambuddy (rolling)** as needed
 
+**No updates or Changelog shows `does not exist in the store`?** In **Settings → Add-ons → ⋮ → Repositories**, the URL must match the repo you actually use — this one:  
+`https://github.com/Poltavtcev/hassio-koinsight`  
+Each URL gets its own store id in Supervisor; a mismatch breaks changelog / update detection. Remove the repo entry, reload the page (or **Check for updates**), add the URL again, restart **Home Assistant Supervisor** if needed.
+
 ## Features
 
 **KoInsight**

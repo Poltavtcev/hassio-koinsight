@@ -8,7 +8,7 @@ build_from:
 labels:
   org.opencontainers.image.title: "Home Assistant Add-on: Bambuddy (rolling)"
   org.opencontainers.image.description: "BamBuddy from ghcr.io/maziggy/bambuddy:latest — rebuild the add-on to pick up new upstream releases."
-  org.opencontainers.image.source: "https://github.com/schwarztrinker/hassio-koinsight"
+  org.opencontainers.image.source: "https://github.com/Poltavtcev/hassio-koinsight"
   org.opencontainers.image.licenses: "MIT License"
 args:
   BAMBUDDY_VERSION: "latest"

@@ -1,12 +1,12 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Bambuddy (rolling)
-version: "1.0.5"
+version: "1.0.6"
 slug: bambuddy
 description: >-
   BamBuddy print archive for Bambu Lab printers. Alpine runtime reinstalls
   Python deps (plate detection / OpenCV). Host networking exposes virtual printer
   LAN ports on the HA machine. Rebuild in Supervisor to refresh upstream.
-url: "https://github.com/schwarztrinker/hassio-koinsight"
+url: "https://github.com/Poltavtcev/hassio-koinsight"
 arch:
   - armhf
   - armv7
