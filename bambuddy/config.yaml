@@ -1,11 +1,11 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Bambuddy (rolling)
-version: "1.0.3"
+version: "1.0.4"
 slug: bambuddy
 description: >-
-  BamBuddy print archive for Bambu Lab printers. Built from
-  ghcr.io/maziggy/bambuddy:latest — use Rebuild in Supervisor to refresh
-  to the newest published image.
+  BamBuddy print archive for Bambu Lab printers. Runs the upstream Debian-based
+  image (no Alpine pip rebuild). Use host networking so the virtual printer LAN
+  ports are reachable; Rebuild in Supervisor to refresh upstream.
 url: "https://github.com/schwarztrinker/hassio-koinsight"
 arch:
   - armhf
@@ -14,6 +14,7 @@ arch:
   - amd64
   - i386
 init: false
+host_network: true
 hassio_role: homeassistant
 privileged:
   - NET_RAW
@@ -22,7 +23,5 @@ options:
   debug: false
 schema:
   debug: bool
-ports:
-  8000/tcp: 8000
-webui: http://[HOST]:[PORT:8000]
-watchdog: http://[HOST]:[PORT:8000]/health
+webui: http://[HOST]:8000
+watchdog: http://[HOST]:8000/health

@@ -1,10 +1,13 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
-build_from:
-  aarch64: "ghcr.io/home-assistant/aarch64-base-python:3.13-alpine3.23"
-  amd64: "ghcr.io/home-assistant/amd64-base-python:3.13-alpine3.23"
-  armhf: "ghcr.io/home-assistant/armhf-base-python:3.13-alpine3.23"
-  armv7: "ghcr.io/home-assistant/armv7-base-python:3.13-alpine3.23"
-  i386: "ghcr.io/home-assistant/i386-base-python:3.13-alpine3.23"
+# Per-arch Home Assistant base-python images are not used; the Dockerfile extends
+# ghcr.io/maziggy/bambuddy directly (Debian-based) so deps match upstream and
+# opencv-python-headless is not rebuilt on Alpine.
+# build_from:
+#   aarch64: "ghcr.io/home-assistant/aarch64-base-python:3.13-alpine3.23"
+#   amd64: "ghcr.io/home-assistant/amd64-base-python:3.13-alpine3.23"
+#   armhf: "ghcr.io/home-assistant/armhf-base-python:3.13-alpine3.23"
+#   armv7: "ghcr.io/home-assistant/armv7-base-python:3.13-alpine3.23"
+#   i386: "ghcr.io/home-assistant/i386-base-python:3.13-alpine3.23"
 labels:
   org.opencontainers.image.title: "Home Assistant Add-on: Bambuddy (rolling)"
   org.opencontainers.image.description: "BamBuddy from ghcr.io/maziggy/bambuddy:latest — rebuild the add-on to pick up new upstream releases."
