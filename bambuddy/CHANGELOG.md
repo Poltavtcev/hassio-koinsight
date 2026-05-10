@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.1.4] - 2026-05-10
+
+- Web UI and health check moved from port **8000** to **8480** (`config.yaml`, `run`, translations) to avoid **EADDRINUSE** on hosts where 8000 is already taken while using **`host_network`**.
+
 ## [1.1.3] - 2026-05-09
 
 - Fix Supervisor validation: **`webui` / `watchdog` must use `[PORT:8000]`**, not a literal `:8000` after `[HOST]` (regex in HA Supervisor). Restored **`ports`** so the placeholder resolves.

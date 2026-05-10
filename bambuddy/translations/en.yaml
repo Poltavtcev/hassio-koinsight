@@ -3,4 +3,4 @@ configuration:
     name: Debug
     description: Flag to enable debug messages
 network:
-  8000/tcp: Web Interface
+  8480/tcp: Web Interface

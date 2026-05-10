@@ -6,7 +6,7 @@ Each **Rebuild** in Supervisor pulls whatever `latest` points to on GitHub Conta
 
 The add-on rebuilds BamBuddy’s Python dependencies on the Home Assistant Alpine/Python base (`pip install -r requirements.txt`, plus `py3-opencv`) so optional plate detection keeps working.
 
-It also uses **`host_network: true`** so BamBuddy’s virtual printer ports (MQTT, FTP, etc.) bind on the Home Assistant host — same idea as upstream’s Linux `network_mode: host`. Web UI: `http://<home-assistant-ip>:8000`.
+It also uses **`host_network: true`** so BamBuddy’s virtual printer ports (MQTT, FTP, etc.) bind on the Home Assistant host — same idea as upstream’s Linux `network_mode: host`. Web UI: `http://<home-assistant-ip>:8480`.
 
 ![Supports aarch64 Architecture][aarch64-shield] ![Supports amd64 Architecture][amd64-shield]
 

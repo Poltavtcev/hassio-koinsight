@@ -33,5 +33,6 @@ COPY --from=builder /app /app
 ENV PYTHONUNBUFFERED=1
 ENV DATA_DIR=/app/data
 ENV LOG_DIR=/app/logs
+ENV PORT=8480
 
 COPY rootfs /

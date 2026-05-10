@@ -80,7 +80,7 @@ Supervisor stores each installed add-on against an internal store id (`<repo-has
 
 After a fresh install, **Rebuild** should work. Your BamBuddy database/files normally live in the add-on’s data volume and are often kept across uninstall depending on platform — when unsure, rely on step 1.
 
-**Only KoInsight appears from this repo, not Bambuddy?** See Supervisor logs (**Settings → System → Logs** → choose **Supervisor**). If you see **`Can't read …/bambuddy/config.yaml`** with **`webui`**, use **`http://[HOST]:[PORT:8000]`** (not `http://[HOST]:8000`) — fixed in **Bambuddy 1.1.3**. Other causes: invalid `schema`, unsupported **Dockerfile** syntax, bad **`FROM`**, or wrong **`arch`** list. Refresh the repo after updating.
+**Only KoInsight appears from this repo, not Bambuddy?** See Supervisor logs (**Settings → System → Logs** → choose **Supervisor**). If you see **`Can't read …/bambuddy/config.yaml`** with **`webui`**, use **`http://[HOST]:[PORT:8480]`** (not a literal port after `[HOST]` without `[PORT:…]`) — see **Bambuddy 1.1.3+**. Other causes: invalid `schema`, unsupported **Dockerfile** syntax, bad **`FROM`**, or wrong **`arch`** list. Refresh the repo after updating.
 
 ## Features
 
