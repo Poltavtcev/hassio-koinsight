@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.1.5] - 2026-05-11
+
+- Mount Home Assistant **`/media`** into the add-on (`map: media:rw`) so paths like `/media/NAS_1/...` work for **Link External Folder** and other file features.
+
 ## [1.1.4] - 2026-05-10
 
 - Web UI and health check moved from port **8000** to **8480** (`config.yaml`, `run`, translations) to avoid **EADDRINUSE** on hosts where 8000 is already taken while using **`host_network`**.
