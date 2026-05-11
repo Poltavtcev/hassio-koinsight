@@ -12,6 +12,10 @@ arch:
   - amd64
 init: false
 host_network: true
+map:
+  # Exposes HA /media inside the add-on at the same path (e.g. NAS mounts).
+  # Required for Link External Folder paths like /media/NAS_1/...
+  - media:rw
 hassio_role: homeassistant
 privileged:
   - NET_RAW
