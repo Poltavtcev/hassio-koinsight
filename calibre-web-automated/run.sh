@@ -8,19 +8,28 @@ if [[ ! -f "${OPTIONS}" ]]; then
   exit 1
 fi
 
-PUID=$(jq -r '.puid // 0' "${OPTIONS}")
-PGID=$(jq -r '.pgid // 0' "${OPTIONS}")
+PUID=$(jq -r '.puid // 1000' "${OPTIONS}")
+PGID=$(jq -r '.pgid // 1000' "${OPTIONS}")
 TZ=$(jq -r '.timezone // "UTC"' "${OPTIONS}")
 LIBRARY=$(jq -r '.library_path // "/data/calibre-library"' "${OPTIONS}")
 INGEST=$(jq -r '.ingest_path // "/data/cwa-book-ingest"' "${OPTIONS}")
 HARDCOVER=$(jq -r '.hardcover_token // ""' "${OPTIONS}")
 NETWORK_SHARE=$(jq -r '.network_share_mode // false' "${OPTIONS}")
+TRUSTED_PROXY=$(jq -r '.trusted_proxy_count // 1' "${OPTIONS}")
 
 export PUID PGID TZ
 export HARDCOVER_TOKEN="${HARDCOVER}"
 export NETWORK_SHARE_MODE="${NETWORK_SHARE}"
+export TRUSTED_PROXY_COUNT="${TRUSTED_PROXY}"
 
 mkdir -p /data/config "${LIBRARY}" "${INGEST}" 2>/dev/null || true
+
+# CWA runs as user abc; app.db lives under /data/config. Wrong ownership breaks user/settings saves.
+if [[ "${NETWORK_SHARE}" == "true" ]]; then
+  echo "INFO: network_share_mode=true — skipping chown on library/ingest paths"
+else
+  chown -R "${PUID}:${PGID}" /data/config 2>/dev/null || true
+fi
 
 # Point CWA's fixed paths at HA options. Never rm -rf (mount points raise "Device or resource busy").
 link_to() {
@@ -68,6 +77,8 @@ link_to /cwa-book-ingest "${INGEST}" || true
 echo "=== Calibre-Web Automated (Home Assistant add-on) ==="
 echo "library_path option: ${LIBRARY}"
 echo "ingest_path option:  ${INGEST}"
+echo "PUID/PGID: ${PUID}/${PGID}  TRUSTED_PROXY_COUNT: ${TRUSTED_PROXY}"
+echo "network_share_mode: ${NETWORK_SHARE}"
 echo "resolved library:  $(readlink -f /calibre-library 2>/dev/null || echo 'n/a')"
 echo "resolved ingest:     $(readlink -f /cwa-book-ingest 2>/dev/null || echo 'n/a')"
 
