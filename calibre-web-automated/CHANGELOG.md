@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.3] - 2026-05-16
+
+- Fix restart loop: stop using rm on `/config` and `/calibre-library` Docker volume mount points.
+- Use symlink or `mount --bind` instead; add `SYS_ADMIN` for bind mounts on HA OS.
+
 ## [1.0.2] - 2026-05-16
 
 - Fix run.sh: do not `rm -rf` through symlinks into `/share` or `/media`.

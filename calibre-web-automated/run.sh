@@ -1,5 +1,6 @@
 #!/bin/bash
-set -euo pipefail
+# Do not use set -e during path setup — busy mount points must not abort startup.
+set -uo pipefail
 
 OPTIONS=/data/options.json
 if [[ ! -f "${OPTIONS}" ]]; then
@@ -19,56 +20,67 @@ export PUID PGID TZ
 export HARDCOVER_TOKEN="${HARDCOVER}"
 export NETWORK_SHARE_MODE="${NETWORK_SHARE}"
 
-mkdir -p /data/config
-mkdir -p "$(dirname "${LIBRARY}")" "$(dirname "${INGEST}")" 2>/dev/null || true
-mkdir -p "${LIBRARY}" "${INGEST}" 2>/dev/null || true
+mkdir -p /data/config "${LIBRARY}" "${INGEST}" 2>/dev/null || true
 
-# Replace only symlinks / image stubs — never "rm -rf" through a symlink into /share or /media.
-replace_link() {
-  local target="$1"
+# Point CWA's fixed paths at HA options. Never rm -rf (mount points raise "Device or resource busy").
+link_to() {
+  local link="$1"
   local dest="$2"
-  if [[ -L "${target}" ]]; then
-    rm -f "${target}"
-  elif [[ -d "${target}" ]] && [[ -z "$(ls -A "${target}" 2>/dev/null || true)" ]]; then
-    rmdir "${target}" 2>/dev/null || rm -rf "${target}"
-  elif [[ -e "${target}" ]]; then
-    echo "WARNING: ${target} exists and is not a symlink; leaving it in place (expected link to ${dest})"
-    return 1
+  local dest_resolved
+
+  dest_resolved=$(readlink -f "${dest}")
+
+  if [[ -L "${link}" ]]; then
+    if [[ "$(readlink -f "${link}")" == "${dest_resolved}" ]]; then
+      return 0
+    fi
+    rm -f "${link}" 2>/dev/null || true
   fi
-  ln -sfn "${dest}" "${target}"
-  return 0
+
+  if [[ -e "${link}" ]] && [[ ! -L "${link}" ]]; then
+    if mountpoint -q "${link}" 2>/dev/null; then
+      umount "${link}" 2>/dev/null || true
+    fi
+    if [[ -d "${link}" ]] && ! mountpoint -q "${link}" 2>/dev/null; then
+      rmdir "${link}" 2>/dev/null || true
+    fi
+  fi
+
+  if [[ ! -e "${link}" ]]; then
+    ln -sfn "${dest_resolved}" "${link}"
+    echo "INFO: ${link} -> ${dest_resolved} (symlink)"
+    return 0
+  fi
+
+  if mount --bind "${dest_resolved}" "${link}" 2>/dev/null; then
+    echo "INFO: ${link} bind-mounted to ${dest_resolved}"
+    return 0
+  fi
+
+  echo "ERROR: Could not redirect ${link} to ${dest_resolved} (path busy). Restart the add-on after a full stop, or reinstall."
+  return 1
 }
 
-replace_link /config /data/config || true
-replace_link /calibre-library "${LIBRARY}"
-replace_link /cwa-book-ingest "${INGEST}"
+link_to /config /data/config || true
+link_to /calibre-library "${LIBRARY}" || true
+link_to /cwa-book-ingest "${INGEST}" || true
 
 echo "=== Calibre-Web Automated (Home Assistant add-on) ==="
 echo "library_path option: ${LIBRARY}"
 echo "ingest_path option:  ${INGEST}"
-echo "container links:     /calibre-library -> $(readlink -f /calibre-library 2>/dev/null || echo '?')"
-echo "                     /cwa-book-ingest -> $(readlink -f /cwa-book-ingest 2>/dev/null || echo '?')"
+echo "resolved library:  $(readlink -f /calibre-library 2>/dev/null || echo 'n/a')"
+echo "resolved ingest:     $(readlink -f /cwa-book-ingest 2>/dev/null || echo 'n/a')"
 
 if [[ ! -d "${LIBRARY}" ]]; then
-  echo "ERROR: library_path '${LIBRARY}' is not a directory inside the container."
-  echo "       Check Supervisor maps (share/media) and the folder name (Linux is case-sensitive: Books vs books)."
+  echo "ERROR: library_path '${LIBRARY}' is not a directory (check share/media map and spelling)."
   exit 1
 fi
 
 if [[ -f "${LIBRARY}/metadata.db" ]]; then
   echo "Found existing Calibre library: ${LIBRARY}/metadata.db"
 else
-  echo "No metadata.db in ${LIBRARY} — CWA will create a new empty library there on first start."
-  echo "If you already use Calibre elsewhere, point library_path at the folder that contains metadata.db."
-  echo "Plain ebook files (no Calibre library) go in ingest_path: ${INGEST}"
+  echo "No metadata.db in ${LIBRARY} — CWA will create a new library there unless you change library_path."
 fi
 
-if [[ -f /data/config/app.db ]]; then
-  stored=$(sqlite3 /data/config/app.db "SELECT config_calibre_dir FROM settings LIMIT 1;" 2>/dev/null || true)
-  if [[ -n "${stored}" ]] && [[ "${stored}" != "${LIBRARY}" ]] && [[ "${stored}" != "/calibre-library" ]]; then
-    echo "NOTE: app.db still lists library '${stored}'. After changing library_path, use CWA Admin ->"
-    echo "      Edit Calibre database -> Library location, or stop the add-on and remove /data/config/app.db to re-detect."
-  fi
-fi
-
+set -e
 exec /init
