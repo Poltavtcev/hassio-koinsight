@@ -22,14 +22,43 @@ export HARDCOVER_TOKEN="${HARDCOVER}"
 export NETWORK_SHARE_MODE="${NETWORK_SHARE}"
 export TRUSTED_PROXY_COUNT="${TRUSTED_PROXY}"
 
-mkdir -p /data/config "${LIBRARY}" "${INGEST}" 2>/dev/null || true
+CONFIG_PERSIST=/data/config
+mkdir -p "${CONFIG_PERSIST}" "${LIBRARY}" "${INGEST}" 2>/dev/null || true
 
 # CWA runs as user abc; app.db lives under /data/config. Wrong ownership breaks user/settings saves.
 if [[ "${NETWORK_SHARE}" == "true" ]]; then
   echo "INFO: network_share_mode=true — skipping chown on library/ingest paths"
 else
-  chown -R "${PUID}:${PGID}" /data/config 2>/dev/null || true
+  chown -R "${PUID}:${PGID}" "${CONFIG_PERSIST}" 2>/dev/null || true
 fi
+
+is_bind_mount_to() {
+  local target="$1"
+  local dest="$2"
+  mountpoint -q "${target}" 2>/dev/null || return 1
+  findmnt -n -o SOURCE --target "${target}" 2>/dev/null | grep -qF "${dest}"
+}
+
+# Keep HA-persistent /data/config authoritative; recover from orphaned Docker /config volume.
+sync_config_store() {
+  local docker_has=0
+  local persist_has=0
+
+  [[ -f /config/app.db ]] && docker_has=1
+  [[ -f "${CONFIG_PERSIST}/app.db" ]] && persist_has=1
+
+  if [[ "${persist_has}" -eq 0 ]] && [[ "${docker_has}" -eq 1 ]] && ! is_bind_mount_to /config "${CONFIG_PERSIST}"; then
+    echo "INFO: Recovering config from Docker /config volume into ${CONFIG_PERSIST}..."
+    cp -a /config/. "${CONFIG_PERSIST}/" 2>/dev/null || true
+    persist_has=1
+  fi
+
+  if [[ "${persist_has}" -eq 1 ]] && ! is_bind_mount_to /config "${CONFIG_PERSIST}"; then
+    echo "INFO: Syncing ${CONFIG_PERSIST} -> /config (bind mount not active yet)"
+    mkdir -p /config
+    cp -a "${CONFIG_PERSIST}/." /config/ 2>/dev/null || true
+  fi
+}
 
 # Point CWA's fixed paths at HA options. Never rm -rf (mount points raise "Device or resource busy").
 link_to() {
@@ -46,10 +75,19 @@ link_to() {
     rm -f "${link}" 2>/dev/null || true
   fi
 
-  if [[ -e "${link}" ]] && [[ ! -L "${link}" ]]; then
-    if mountpoint -q "${link}" 2>/dev/null; then
-      umount "${link}" 2>/dev/null || true
+  if is_bind_mount_to "${link}" "${dest_resolved}"; then
+    echo "INFO: ${link} already bind-mounted to ${dest_resolved}"
+    return 0
+  fi
+
+  if mountpoint -q "${link}" 2>/dev/null; then
+    if ! umount "${link}" 2>/dev/null; then
+      echo "WARN: Could not umount ${link}; leaving existing mount (config may not persist)"
+      return 0
     fi
+  fi
+
+  if [[ -e "${link}" ]] && [[ ! -L "${link}" ]]; then
     if [[ -d "${link}" ]] && ! mountpoint -q "${link}" 2>/dev/null; then
       rmdir "${link}" 2>/dev/null || true
     fi
@@ -66,11 +104,18 @@ link_to() {
     return 0
   fi
 
-  echo "ERROR: Could not redirect ${link} to ${dest_resolved} (path busy). Restart the add-on after a full stop, or reinstall."
+  echo "ERROR: Could not bind-mount ${link} to ${dest_resolved}. Copying config as fallback."
+  mkdir -p "${dest_resolved}" "${link}"
+  if [[ -d "${dest_resolved}" ]]; then
+    cp -a "${dest_resolved}/." "${link}/" 2>/dev/null || true
+  fi
   return 1
 }
 
-link_to /config /data/config || true
+sync_config_store
+link_to /config "${CONFIG_PERSIST}" || true
+sync_config_store
+
 link_to /calibre-library "${LIBRARY}" || true
 link_to /cwa-book-ingest "${INGEST}" || true
 
@@ -81,6 +126,15 @@ echo "PUID/PGID: ${PUID}/${PGID}  TRUSTED_PROXY_COUNT: ${TRUSTED_PROXY}"
 echo "network_share_mode: ${NETWORK_SHARE}"
 echo "resolved library:  $(readlink -f /calibre-library 2>/dev/null || echo 'n/a')"
 echo "resolved ingest:     $(readlink -f /cwa-book-ingest 2>/dev/null || echo 'n/a')"
+echo "config persist dir: ${CONFIG_PERSIST}"
+if [[ -f "${CONFIG_PERSIST}/app.db" ]]; then
+  echo "config: found ${CONFIG_PERSIST}/app.db ($(stat -c '%s bytes, modified %y' "${CONFIG_PERSIST}/app.db" 2>/dev/null || stat -f '%z bytes' "${CONFIG_PERSIST}/app.db"))"
+else
+  echo "config: no app.db in ${CONFIG_PERSIST} (first run or data loss — default login admin/admin123)"
+fi
+if mountpoint -q /config 2>/dev/null; then
+  echo "config: /config mount -> $(findmnt -n -o SOURCE --target /config 2>/dev/null || echo unknown)"
+fi
 
 if [[ ! -d "${LIBRARY}" ]]; then
   echo "ERROR: library_path '${LIBRARY}' is not a directory (check share/media map and spelling)."

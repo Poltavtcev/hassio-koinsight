@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Calibre-Web Automated
-version: "1.0.5"
+version: "1.0.6"
 slug: calibre-web-automated
 description: >-
   Calibre-Web Automated — web UI for your Calibre library with automatic ingest,
