@@ -1,0 +1,22 @@
+configuration:
+  library_path:
+    name: Calibre library path
+    description: Folder containing (or receiving) your Calibre library. Use /share or /media for NAS.
+  ingest_path:
+    name: Book ingest folder
+    description: Drop ebooks here for automatic import. Files are removed after processing.
+  puid:
+    name: PUID
+    description: User ID for file ownership (0 is typical on Home Assistant OS).
+  pgid:
+    name: PGID
+    description: Group ID for file ownership (0 is typical on Home Assistant OS).
+  timezone:
+    name: Timezone
+    description: e.g. Europe/Kyiv
+  hardcover_token:
+    name: Hardcover API token
+    description: Optional metadata provider token (see Hardcover API docs).
+  network_share_mode:
+    name: Network share mode
+    description: Enable when the library is on NFS/SMB (polling instead of inotify).

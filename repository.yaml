@@ -1,3 +1,3 @@
-name: "KoInsight & BamBuddy Add-ons"
-description: "Home Assistant add-ons: KoInsight (KOReader reading dashboard) and BamBuddy / Bambuddy (Bambu Lab print archive & virtual printer)."
+name: "KoInsight, BamBuddy & Calibre-Web Add-ons"
+description: "Home Assistant add-ons: KoInsight (KOReader), BamBuddy (Bambu Lab), Calibre-Web Automated (eBook library)."
 maintainer: "Martin Stöcker me@mstoecker.de"

@@ -1,0 +1,40 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: Calibre-Web Automated
+version: "1.0.0"
+slug: calibre-web-automated
+description: >-
+  Calibre-Web Automated — web UI for your Calibre library with automatic ingest,
+  metadata, and KOReader sync. Wraps crocodilestick/calibre-web-automated; Rebuild
+  to refresh upstream.
+url: "https://github.com/Poltavtcev/hassio-koinsight"
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+map:
+  - share:rw
+  - media:rw
+options:
+  library_path: /share/calibre-library
+  ingest_path: /share/cwa-book-ingest
+  puid: 0
+  pgid: 0
+  timezone: UTC
+  hardcover_token: ""
+  network_share_mode: false
+schema:
+  library_path: str
+  ingest_path: str
+  puid: int
+  pgid: int
+  timezone: str
+  hardcover_token: str?
+  network_share_mode: bool
+ports:
+  8083/tcp: 8083
+ports_description:
+  8083/tcp: Calibre-Web Automated web UI
+webui: http://[HOST]:[PORT:8083]
+watchdog: http://[HOST]:[PORT:8083]

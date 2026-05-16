@@ -1,15 +1,16 @@
-# KoInsight & BamBuddy — Home Assistant Add-ons
+# KoInsight, BamBuddy & Calibre-Web — Home Assistant Add-ons
 
 [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A//github.com/Poltavtcev/hassio-koinsight)
 
 ## About
 
-This repository bundles **two** optional Home Assistant add-ons:
+This repository bundles **three** optional Home Assistant add-ons:
 
 | Add-on | Upstream | What it does |
 |--------|----------|----------------|
 | **[KoInsight](./koinsight/)** | [KoInsight](https://github.com/GeorgeSG/KoInsight) | Web dashboard for **KOReader** reading statistics and sync |
 | **[Bambuddy](./bambuddy/)** | [BamBuddy](https://github.com/maziggy/bambuddy) | **Bambu Lab** print archive, management, and virtual printer (LAN) |
+| **[Calibre-Web Automated](./calibre-web-automated/)** | [Calibre-Web-Automated](https://github.com/crocodilestick/Calibre-Web-Automated) | **Calibre** library web UI with automatic book ingest |
 
 Install only what you need from the Add-on Store after adding this repository.
 
@@ -31,6 +32,16 @@ _BamBuddy — print archive and management for Bambu Lab printers. This add-on b
 
 [bambuddy-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [bambuddy-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+
+### [Calibre-Web Automated](./calibre-web-automated/)
+
+![Supports aarch64 Architecture][cwa-aarch64-shield]
+![Supports amd64 Architecture][cwa-amd64-shield]
+
+_Calibre-Web Automated — browse and manage your eBook library. Built from **`crocodilestick/calibre-web-automated:latest`**; **Rebuild** to refresh upstream._
+
+[cwa-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[cwa-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 
 ## KoInsight: build from source (rolling)
 
