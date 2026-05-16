@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Calibre-Web Automated
-version: "1.0.4"
+version: "1.0.5"
 slug: calibre-web-automated
 description: >-
   Calibre-Web Automated — web UI for your Calibre library with automatic ingest,
@@ -13,8 +13,8 @@ arch:
 startup: application
 boot: auto
 init: false
-ingress: true
-ingress_port: 8083
+# Ingress breaks CWA: Flask serves /static/... from site root, but HA serves the UI under
+# /api/hassio_ingress/<token>/ — jQuery never loads and Save buttons do nothing.
 privileged:
   - SYS_ADMIN
 map:
