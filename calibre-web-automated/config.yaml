@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Calibre-Web Automated
-version: "1.0.6"
+version: "1.0.7"
 slug: calibre-web-automated
 description: >-
   Calibre-Web Automated — web UI for your Calibre library with automatic ingest,
@@ -18,6 +18,8 @@ init: false
 privileged:
   - SYS_ADMIN
 map:
+  # Persistent app.db / cwa.db — visible in SMB ADDON_CONFIGS like other add-ons
+  - addon_config:rw
   - share:rw
   - media:rw
 options:
