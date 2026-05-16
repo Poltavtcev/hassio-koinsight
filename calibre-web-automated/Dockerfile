@@ -12,7 +12,7 @@ LABEL org.opencontainers.image.source="https://github.com/Poltavtcev/hassio-koin
 LABEL org.opencontainers.image.licenses="GPL-3.0"
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends jq \
+  && apt-get install -y --no-install-recommends jq sqlite3 \
   && rm -rf /var/lib/apt/lists/*
 
 COPY run.sh /run.sh
