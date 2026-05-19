@@ -28,7 +28,7 @@ _KoInsight brings your KOReader reading stats to life with a clean, web-based da
 ![Supports aarch64 Architecture][bambuddy-aarch64-shield]
 ![Supports amd64 Architecture][bambuddy-amd64-shield]
 
-_BamBuddy — print archive and management for Bambu Lab printers. This add-on builds from **`ghcr.io/maziggy/bambuddy:latest`** with optional **Rebuild** in Supervisor to refresh upstream. Same **aarch64 / amd64** targets as KoInsight (HA multi-arch base images)._
+_BamBuddy — print archive and management for Bambu Lab printers. Thin HA wrapper around **`ghcr.io/maziggy/bambuddy:latest`** (fast **Rebuild** — no pip compile on the host). **aarch64 / amd64**._
 
 [bambuddy-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [bambuddy-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
