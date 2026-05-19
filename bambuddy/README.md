@@ -1,12 +1,22 @@
 # Bambuddy (rolling)
 
-[BamBuddy](https://github.com/maziggy/bambuddy) for Home Assistant, built from **`ghcr.io/maziggy/bambuddy:latest`**.
+[BamBuddy](https://github.com/maziggy/bambuddy) for Home Assistant, wrapped around **`ghcr.io/maziggy/bambuddy:latest`**.
 
-Each **Rebuild** in Supervisor pulls whatever `latest` points to on GitHub Container Registry at that moment.
+## Updates
 
-The add-on rebuilds BamBuddy’s Python dependencies on the Home Assistant Alpine/Python base (`pip install -r requirements.txt`, plus `py3-opencv`) so optional plate detection keeps working.
+Each **Rebuild** in Supervisor pulls the upstream image and applies a thin HA layer (`run.sh`, `jq`). There is **no** `pip install` on your Home Assistant host — updates are much faster than the old Alpine rebuild.
 
-It also uses **`host_network: true`** so BamBuddy’s virtual printer ports (MQTT, FTP, etc.) bind on the Home Assistant host — same idea as upstream’s Linux `network_mode: host`. Web UI: `http://<home-assistant-ip>:8480`.
+**Restart** keeps the same image; use **Rebuild** when you want a newer `latest` from GitHub Container Registry.
+
+## Networking
+
+**`host_network: true`** so BamBuddy’s virtual printer ports (MQTT, FTP, etc.) bind on the Home Assistant host — same idea as upstream’s Linux `network_mode: host`.
+
+Web UI: `http://<home-assistant-ip>:8480`
+
+## Data
+
+BamBuddy data and logs persist under the add-on **`/data`** volume (`/data/data`, `/data/logs` inside the container).
 
 ![Supports aarch64 Architecture][aarch64-shield] ![Supports amd64 Architecture][amd64-shield]
 

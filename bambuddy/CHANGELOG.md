@@ -2,6 +2,11 @@
 
 # Changelog
 
+## [1.2.0] - 2026-05-19
+
+- **Fast updates:** use upstream `ghcr.io/maziggy/bambuddy` directly (Calibre-Web-style wrapper). No more Alpine `pip install` / OpenCV compile on Home Assistant during Rebuild.
+- Replace s6/`bashio` startup with `run.sh` + upstream `docker-entrypoint.sh` (PUID/PGID, data dirs unchanged under `/data/data` and `/data/logs`).
+
 ## [1.1.5] - 2026-05-11
 
 - Mount Home Assistant **`/media`** into the add-on (`map: media:rw`) so paths like `/media/NAS_1/...` work for **Link External Folder** and other file features.
