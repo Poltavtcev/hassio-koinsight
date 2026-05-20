@@ -13,8 +13,6 @@ on:
     - cron: "0 5 * * 1"
   push:
     branches: [main]
-    paths:
-      - .github/workflows/publish-bambuddy-image.yml
 
 permissions:
   contents: read
