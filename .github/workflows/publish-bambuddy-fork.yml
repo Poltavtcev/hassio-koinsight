@@ -37,6 +37,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Docker-safe tag from branch name
+        id: tag
+        run: |
+          # Docker tags cannot contain '/' (e.g. feature/foo → feature-foo)
+          safe=$(echo "${{ inputs.ref }}" | tr '/:' '-')
+          echo "value=${safe}" >> "$GITHUB_OUTPUT"
+
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
 
@@ -49,4 +56,4 @@ jobs:
           sbom: false
           tags: |
             ghcr.io/poltavtcev/bambuddy:latest
-            ghcr.io/poltavtcev/bambuddy:${{ inputs.ref }}
+            ghcr.io/poltavtcev/bambuddy:${{ steps.tag.outputs.value }}
