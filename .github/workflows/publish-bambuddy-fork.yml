@@ -25,7 +25,11 @@ jobs:
           fetch-depth: 0
 
       - name: Ensure .git/HEAD for Dockerfile
-        run: test -f .git/HEAD || (mkdir -p .git && echo "ref: refs/heads/${{ inputs.ref }}" > .git/HEAD)
+        run: |
+          test -f .git/HEAD || {
+            mkdir -p .git
+            echo "ref: refs/heads/${{ inputs.ref }}" >> .git/HEAD
+          }
 
       - uses: docker/login-action@v3
         with:
