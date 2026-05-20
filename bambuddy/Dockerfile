@@ -1,15 +1,16 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
 #
-# Thin HA wrapper around the upstream image (same model as calibre-web-automated).
-# Updates on Home Assistant are mostly a docker pull + a small layer — no pip compile on the host.
+# Thin HA wrapper around a pre-built BamBuddy image (fast Rebuild on Home Assistant).
+# Default image is built from https://github.com/Poltavtcev/bambuddy (see .github/workflows/publish-bambuddy-image.yml).
+ARG BAMBUDDY_IMAGE=ghcr.io/poltavtcev/bambuddy
 ARG BAMBUDDY_VERSION=latest
 
-FROM ghcr.io/maziggy/bambuddy:${BAMBUDDY_VERSION}
+FROM ${BAMBUDDY_IMAGE}:${BAMBUDDY_VERSION}
 
 LABEL org.opencontainers.image.title="Home Assistant Add-on: Bambuddy"
-LABEL org.opencontainers.image.description="BamBuddy from ghcr.io/maziggy/bambuddy — Rebuild to pull a newer upstream tag."
+LABEL org.opencontainers.image.description="BamBuddy from Poltavtcev/bambuddy fork — Rebuild to pull a newer image tag."
 LABEL org.opencontainers.image.source="https://github.com/Poltavtcev/hassio-koinsight"
-LABEL org.opencontainers.image.licenses="MIT License"
+LABEL org.opencontainers.image.licenses="AGPL-3.0"
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends jq \

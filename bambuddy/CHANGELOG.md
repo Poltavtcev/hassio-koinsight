@@ -2,6 +2,11 @@
 
 # Changelog
 
+## [1.3.0] - 2026-05-20
+
+- Pull pre-built image from **`ghcr.io/poltavtcev/bambuddy`** (fork https://github.com/Poltavtcev/bambuddy), not `maziggy/bambuddy`.
+- Add `build.yaml` and GitHub Actions workflow **Publish BamBuddy image** in `hassio-koinsight` to build/push multi-arch images from the fork.
+
 ## [1.2.1] - 2026-05-19
 
 - Fix **Permission denied** on `/app/logs/bambuddy.log` and `/app/data/.jwt_secret`: always `chown -R` on `/data/data` and `/data/logs` before start (upstream entrypoint skipped when the directory already looked owned by 1000:1000).
