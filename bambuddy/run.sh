@@ -7,6 +7,9 @@ if [[ -f "${OPTIONS}" ]]; then
   DEBUG=$(jq -r '.debug // false' "${OPTIONS}")
 fi
 
+export PUID="${PUID:-1000}"
+export PGID="${PGID:-1000}"
+
 mkdir -p /data/data /data/logs
 
 # Keep BamBuddy state on the HA add-on /data volume across image updates.
@@ -34,11 +37,27 @@ setup_data_link() {
 setup_data_link data
 setup_data_link logs
 
+# Upstream entrypoint only chowns when the directory uid differs; files inside can
+# stay root-owned (e.g. after HA/supervisor created them). Always fix real paths.
+fix_data_permissions() {
+  touch /data/data/.bambuddy /data/logs/.bambuddy 2>/dev/null || true
+
+  if chown -R "${PUID}:${PGID}" /data/data /data/logs; then
+    echo "INFO: ownership ${PUID}:${PGID} on /data/data and /data/logs"
+    return 0
+  fi
+
+  echo "WARN: chown to ${PUID}:${PGID} failed (read-only or NFS mount); using root for BamBuddy"
+  export PUID=0
+  export PGID=0
+  chown -R 0:0 /data/data /data/logs 2>/dev/null || true
+}
+
+fix_data_permissions
+
 export PORT=8480
 export HA_URL="http://supervisor/core"
 export HA_TOKEN="${SUPERVISOR_TOKEN:-}"
-export PUID="${PUID:-1000}"
-export PGID="${PGID:-1000}"
 
 if [[ "${DEBUG}" == "true" ]]; then
   export DEBUG=true

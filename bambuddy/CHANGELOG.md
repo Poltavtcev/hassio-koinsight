@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.2.1] - 2026-05-19
+
+- Fix **Permission denied** on `/app/logs/bambuddy.log` and `/app/data/.jwt_secret`: always `chown -R` on `/data/data` and `/data/logs` before start (upstream entrypoint skipped when the directory already looked owned by 1000:1000).
+
 ## [1.2.0] - 2026-05-19
 
 - **Fast updates:** use upstream `ghcr.io/maziggy/bambuddy` directly (Calibre-Web-style wrapper). No more Alpine `pip install` / OpenCV compile on Home Assistant during Rebuild.
