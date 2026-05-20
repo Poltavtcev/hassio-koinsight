@@ -1,10 +1,11 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Bambuddy (rolling)
-version: "1.2.2"
+version: "1.3.0"
 slug: bambuddy
 description: >-
-  BamBuddy print archive for Bambu Lab printers. Pre-built image (fast Rebuild on HA).
-  Host networking for virtual printer LAN ports. Rebuild to refresh upstream image.
+  BamBuddy from Poltavtcev/bambuddy fork (ghcr.io/poltavtcev/bambuddy). Fast Rebuild on HA.
+  Run "Publish BamBuddy fork image" in this repo after fork changes, then Rebuild the add-on.
+  Host networking for virtual printer LAN ports.
 url: "https://github.com/Poltavtcev/hassio-koinsight"
 arch:
   - aarch64

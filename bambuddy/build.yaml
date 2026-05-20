@@ -1,7 +1,7 @@
 ---
 build_from:
-  aarch64: ghcr.io/maziggy/bambuddy:latest
-  amd64: ghcr.io/maziggy/bambuddy:latest
+  aarch64: ghcr.io/poltavtcev/bambuddy:latest
+  amd64: ghcr.io/poltavtcev/bambuddy:latest
 arg:
-  BAMBUDDY_IMAGE: ghcr.io/maziggy/bambuddy
+  BAMBUDDY_IMAGE: ghcr.io/poltavtcev/bambuddy
   BAMBUDDY_VERSION: latest

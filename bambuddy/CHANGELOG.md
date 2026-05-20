@@ -2,9 +2,14 @@
 
 # Changelog
 
+## [1.3.0] - 2026-05-20
+
+- Pull **`ghcr.io/poltavtcev/bambuddy`** (fork https://github.com/Poltavtcev/bambuddy), not maziggy.
+- Workflow **Publish BamBuddy fork image** in this repo only (does not change the bambuddy fork).
+
 ## [1.2.2] - 2026-05-20
 
-- Revert default image to **`ghcr.io/maziggy/bambuddy`** so HA Rebuild works without a separate GHCR publish step.
+- Temporary revert to maziggy image (superseded by 1.3.0).
 
 ## [1.2.1] - 2026-05-19
 
