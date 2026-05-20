@@ -28,7 +28,7 @@ _KoInsight brings your KOReader reading stats to life with a clean, web-based da
 ![Supports aarch64 Architecture][bambuddy-aarch64-shield]
 ![Supports amd64 Architecture][bambuddy-amd64-shield]
 
-_BamBuddy — fork **[Poltavtcev/bambuddy](https://github.com/Poltavtcev/bambuddy)**. HA add-on uses **`ghcr.io/poltavtcev/bambuddy:latest`** (image built by GitHub Actions in this repo). Fast **Rebuild** on HA. **aarch64 / amd64**._
+_BamBuddy — HA add-on wraps **`ghcr.io/maziggy/bambuddy:latest`** (fast **Rebuild**). Fork: **[Poltavtcev/bambuddy](https://github.com/Poltavtcev/bambuddy)**. **aarch64 / amd64**._
 
 [bambuddy-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [bambuddy-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg

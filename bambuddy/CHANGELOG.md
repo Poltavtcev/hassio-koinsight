@@ -2,10 +2,9 @@
 
 # Changelog
 
-## [1.3.0] - 2026-05-20
+## [1.2.2] - 2026-05-20
 
-- Pull pre-built image from **`ghcr.io/poltavtcev/bambuddy`** (fork https://github.com/Poltavtcev/bambuddy), not `maziggy/bambuddy`.
-- Add `build.yaml` and GitHub Actions workflow **Publish BamBuddy image** in `hassio-koinsight` to build/push multi-arch images from the fork.
+- Revert default image to **`ghcr.io/maziggy/bambuddy`** so HA Rebuild works without a separate GHCR publish step.
 
 ## [1.2.1] - 2026-05-19
 
