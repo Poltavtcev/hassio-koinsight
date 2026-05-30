@@ -8,5 +8,5 @@ source /run/openoms/env
 echo "[migrate] applying database migrations…"
 exec /usr/local/bin/openoms-migrate \
     -path=/opt/openoms/migrations \
-    -database="postgres://openoms:${POSTGRES_PASSWORD}@127.0.0.1:5432/openoms?sslmode=disable" \
+    -database="${WORKER_DATABASE_URL}" \
     up

@@ -36,6 +36,21 @@ opt() {
 rand_b64() { openssl rand -base64 "$1" | tr -d '\n' | tr -d '='; }
 rand_hex() { openssl rand -hex "$1" | tr -d '\n'; }
 
+# Percent-encode a string for use inside a URL userinfo component (DSN passwords).
+# Required because openssl rand -base64 may emit '/' or '+', and the Postgres
+# go drivers + golang-migrate parse the connection string as a strict URL.
+urlencode() {
+    local s="$1" out="" i c
+    for (( i=0; i<${#s}; i++ )); do
+        c="${s:i:1}"
+        case "${c}" in
+            [a-zA-Z0-9.~_-]) out+="${c}" ;;
+            *) printf -v out '%s%%%02X' "${out}" "'${c}" ;;
+        esac
+    done
+    printf '%s' "${out}"
+}
+
 # Load previously generated secrets (if any) so we keep stable values across restarts.
 if [[ -f "${SECRETS_FILE}" ]]; then
     # shellcheck disable=SC1090
@@ -48,9 +63,10 @@ POSTGRES_APP_PASSWORD="$(opt postgres_app_password "${POSTGRES_APP_PASSWORD:-}")
 JWT_SECRET="$(opt jwt_secret "${JWT_SECRET:-}")"
 ENCRYPTION_KEY="$(opt encryption_key "${ENCRYPTION_KEY:-}")"
 
-# Auto-generate anything still missing.
-[[ -z "${POSTGRES_PASSWORD:-}"     ]] && POSTGRES_PASSWORD="$(rand_b64 24)"
-[[ -z "${POSTGRES_APP_PASSWORD:-}" ]] && POSTGRES_APP_PASSWORD="$(rand_b64 24)"
+# Auto-generate anything still missing. Postgres passwords use hex so the
+# resulting DSN never needs URL-encoding for fresh installs.
+[[ -z "${POSTGRES_PASSWORD:-}"     ]] && POSTGRES_PASSWORD="$(rand_hex 24)"
+[[ -z "${POSTGRES_APP_PASSWORD:-}" ]] && POSTGRES_APP_PASSWORD="$(rand_hex 24)"
 [[ -z "${JWT_SECRET:-}"            ]] && JWT_SECRET="$(rand_b64 64)"
 [[ -z "${ENCRYPTION_KEY:-}"        ]] && ENCRYPTION_KEY="$(rand_hex 32)"
 
@@ -84,8 +100,12 @@ WORKERS_ENABLED="$(opt workers_enabled "true")"
 LOG_LEVEL="$(opt log_level "info")"
 
 # DSNs for the bundled Postgres. Both connect over the local loopback.
-DATABASE_URL="postgres://openoms_app:${POSTGRES_APP_PASSWORD}@127.0.0.1:5432/openoms?sslmode=disable"
-WORKER_DATABASE_URL="postgres://openoms:${POSTGRES_PASSWORD}@127.0.0.1:5432/openoms?sslmode=disable"
+# Encode passwords because base64-style secrets in legacy /data/secrets.env
+# files may contain '/' or '+', which the URL parser rejects.
+POSTGRES_PASSWORD_URL="$(urlencode "${POSTGRES_PASSWORD}")"
+POSTGRES_APP_PASSWORD_URL="$(urlencode "${POSTGRES_APP_PASSWORD}")"
+DATABASE_URL="postgres://openoms_app:${POSTGRES_APP_PASSWORD_URL}@127.0.0.1:5432/openoms?sslmode=disable"
+WORKER_DATABASE_URL="postgres://openoms:${POSTGRES_PASSWORD_URL}@127.0.0.1:5432/openoms?sslmode=disable"
 REDIS_URL="redis://127.0.0.1:6379"
 
 # Materialise an env file that every s6 service script can `source`.
