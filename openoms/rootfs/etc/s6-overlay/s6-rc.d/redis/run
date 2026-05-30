@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Redis 7 — cache + asynq queue for OpenOMS workers.
+# Memory cap mirrors docker-compose.prod.yml so behaviour matches upstream.
+set -euo pipefail
+exec 2>&1
+
+mkdir -p /data/redis
+chown -R redis:redis /data/redis 2>/dev/null || true
+
+echo "[redis] starting redis-server"
+exec su-exec redis redis-server \
+    --bind 127.0.0.1 \
+    --port 6379 \
+    --dir /data/redis \
+    --maxmemory 128mb \
+    --maxmemory-policy allkeys-lru \
+    --save "" \
+    --appendonly no

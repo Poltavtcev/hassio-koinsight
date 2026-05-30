@@ -1,16 +1,17 @@
-# KoInsight, BamBuddy & Calibre-Web — Home Assistant Add-ons
+# KoInsight, BamBuddy, Calibre-Web & OpenOMS — Home Assistant Add-ons
 
 [![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A//github.com/Poltavtcev/hassio-koinsight)
 
 ## About
 
-This repository bundles **three** optional Home Assistant add-ons:
+This repository bundles **four** optional Home Assistant add-ons:
 
 | Add-on | Upstream | What it does |
 |--------|----------|----------------|
 | **[KoInsight](./koinsight/)** | [KoInsight](https://github.com/GeorgeSG/KoInsight) | Web dashboard for **KOReader** reading statistics and sync |
 | **[Bambuddy](./bambuddy/)** | [BamBuddy](https://github.com/maziggy/bambuddy) | **Bambu Lab** print archive, management, and virtual printer (LAN) |
 | **[Calibre-Web Automated](./calibre-web-automated/)** | [Calibre-Web-Automated](https://github.com/crocodilestick/Calibre-Web-Automated) | **Calibre** library web UI with automatic book ingest |
+| **[OpenOMS](./openoms/)** | [OpenOMS](https://github.com/openoms-org/openoms) | Open-source **Order Management System** (Allegro, InPost, DHL/DPD/GLS, WooCommerce, eBay, Amazon SP-API…); bundles PostgreSQL 17 + Redis 7 + Go API + Next.js dashboard |
 
 Install only what you need from the Add-on Store after adding this repository.
 
@@ -42,6 +43,27 @@ _Calibre-Web Automated — browse and manage your eBook library. Built from **`c
 
 [cwa-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [cwa-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+
+### [OpenOMS](./openoms/)
+
+![Supports aarch64 Architecture][openoms-aarch64-shield]
+![Supports amd64 Architecture][openoms-amd64-shield]
+
+_OpenOMS — Open-source Order Management System with 463 API endpoints,
+141 dashboard pages and integrations for Allegro, InPost, DHL/DPD/GLS, UPS,
+Poczta Polska, Orlen Paczka, FedEx, WooCommerce, eBay, Amazon SP-API,
+Kaufland, OLX, Mirakl/Empik, Erli, Shoper, PrestaShop, Shopify. Packed as a
+**single container** with embedded PostgreSQL 17, Redis 7, the Go API server
+and the Next.js dashboard supervised by `s6-overlay`. Pulls upstream
+`ghcr.io/openoms-org/openoms-{api,dashboard,migrate}:latest` — **Rebuild** to
+refresh. **Plan for ≥ 2 GB free RAM** (Postgres + Redis + Node + Go in one
+container). To use a fork, repoint the three image args in
+[`openoms/build.yaml`](openoms/build.yaml) and publish with the
+[`Publish OpenOMS fork images`](.github/workflows/publish-openoms-fork.yml)
+workflow._
+
+[openoms-aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[openoms-amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
 
 ## KoInsight: build from source (rolling)
 
@@ -108,6 +130,16 @@ After a fresh install, **Rebuild** should work. Your BamBuddy database/files nor
 
 - 🖨️ Bambu Lab workflow helpers (archive, virtual printer on host network where configured)  
 - 🔁 **Rebuild** pulls the current upstream **`latest`** image  
+
+**OpenOMS**
+
+- 🛒 Multi-marketplace orders (Allegro, eBay, Amazon SP-API, WooCommerce, Kaufland, OLX, Erli, Shoper, PrestaShop, Shopify, Mirakl/Empik)  
+- 📦 Carrier label generation + rate shopping (InPost, DHL, DPD, GLS, UPS, Poczta Polska, Orlen Paczka, FedEx)  
+- 🧾 Invoicing (Fakturownia, inFakt, wFirma) and Polish KSeF e-invoicing  
+- 📊 Kanban board, automation rules engine, packing station with barcode scanner  
+- 🔐 2FA/TOTP, RBAC with custom roles, audit log  
+- 🧱 All-in-one container: PostgreSQL 17 + Redis 7 + Go API + Next.js dashboard supervised by `s6-overlay`  
+- 🔁 **Rebuild** repulls the upstream `ghcr.io/openoms-org/openoms-*:latest` image set  
 
 ## Support
 

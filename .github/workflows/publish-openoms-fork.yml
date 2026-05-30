@@ -1,0 +1,98 @@
+# Builds https://github.com/Poltavtcev/openoms (or any fork you point at) and
+# pushes the three required images to ghcr.io/poltavtcev/openoms-{api,dashboard,migrate}.
+# The OpenOMS HA add-on can then be repointed at the fork by editing
+# openoms/build.yaml: OPENOMS_API_IMAGE / OPENOMS_DASHBOARD_IMAGE / OPENOMS_MIGRATE_IMAGE.
+name: Publish OpenOMS fork images
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Fork to build (owner/name)"
+        required: false
+        default: Poltavtcev/openoms
+      ref:
+        description: "Branch / tag / SHA on the fork"
+        required: false
+        default: main
+      images:
+        description: "Comma-separated subset: api,dashboard,migrate (default = all)"
+        required: false
+        default: api,dashboard,migrate
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  OWNER: ${{ github.repository_owner }}
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+          fetch-depth: 0
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker-safe tag from ref
+        id: tag
+        run: |
+          safe=$(echo "${{ inputs.ref }}" | tr '/:' '-')
+          echo "value=${safe}" >> "$GITHUB_OUTPUT"
+          owner_lc=$(echo "${OWNER}" | tr '[:upper:]' '[:lower:]')
+          echo "owner_lc=${owner_lc}" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build & push API image
+        if: contains(inputs.images, 'api')
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: apps/api-server/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          provenance: false
+          sbom: false
+          tags: |
+            ghcr.io/${{ steps.tag.outputs.owner_lc }}/openoms-api:latest
+            ghcr.io/${{ steps.tag.outputs.owner_lc }}/openoms-api:${{ steps.tag.outputs.value }}
+
+      - name: Build & push Dashboard image
+        if: contains(inputs.images, 'dashboard')
+        uses: docker/build-push-action@v6
+        with:
+          context: apps/dashboard
+          file: apps/dashboard/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          provenance: false
+          sbom: false
+          tags: |
+            ghcr.io/${{ steps.tag.outputs.owner_lc }}/openoms-dashboard:latest
+            ghcr.io/${{ steps.tag.outputs.owner_lc }}/openoms-dashboard:${{ steps.tag.outputs.value }}
+
+      - name: Build & push Migrate image
+        if: contains(inputs.images, 'migrate')
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deploy/Dockerfile.migrate
+          push: true
+          platforms: linux/amd64,linux/arm64
+          provenance: false
+          sbom: false
+          tags: |
+            ghcr.io/${{ steps.tag.outputs.owner_lc }}/openoms-migrate:latest
+            ghcr.io/${{ steps.tag.outputs.owner_lc }}/openoms-migrate:${{ steps.tag.outputs.value }}

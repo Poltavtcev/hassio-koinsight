@@ -1,0 +1,71 @@
+# https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
+name: OpenOMS
+version: "0.1.0"
+slug: openoms
+description: >-
+  OpenOMS — Open-source Order Management System (Allegro, InPost, DHL, DPD, GLS,
+  WooCommerce, eBay …). Single-container HA add-on with embedded PostgreSQL 17
+  + Redis 7 + Go API server + Next.js 16 dashboard. Pulls upstream
+  ghcr.io/openoms-org/openoms-{api,dashboard,migrate}:latest images — Rebuild
+  to refresh.
+url: "https://github.com/Poltavtcev/hassio-koinsight"
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+host_network: false
+hassio_role: default
+map:
+  - share:rw
+options:
+  postgres_password: ""
+  postgres_app_password: ""
+  jwt_secret: ""
+  encryption_key: ""
+  base_url: ""
+  frontend_url: ""
+  trusted_proxy_cidrs: ""
+  allegro_client_id: ""
+  allegro_client_secret: ""
+  allegro_webhook_secret: ""
+  inpost_api_token: ""
+  inpost_organization_id: ""
+  inpost_webhook_secret: ""
+  inpost_geowidget_token: ""
+  openai_api_key: ""
+  openai_model: "gpt-4o-mini"
+  feature_allegro: true
+  feature_inpost: true
+  workers_enabled: true
+  log_level: "info"
+schema:
+  postgres_password: password?
+  postgres_app_password: password?
+  jwt_secret: password?
+  encryption_key: password?
+  base_url: str?
+  frontend_url: str?
+  trusted_proxy_cidrs: str?
+  allegro_client_id: str?
+  allegro_client_secret: password?
+  allegro_webhook_secret: password?
+  inpost_api_token: password?
+  inpost_organization_id: str?
+  inpost_webhook_secret: password?
+  inpost_geowidget_token: password?
+  openai_api_key: password?
+  openai_model: str?
+  feature_allegro: bool
+  feature_inpost: bool
+  workers_enabled: bool
+  log_level: list(debug|info|warning|error)?
+ports:
+  3000/tcp: 3000
+  8080/tcp: 8080
+ports_description:
+  3000/tcp: "Dashboard web UI (Next.js)"
+  8080/tcp: "API server (REST / OpenAPI / Swagger)"
+webui: http://[HOST]:[PORT:3000]
+watchdog: http://[HOST]:[PORT:8080]/health

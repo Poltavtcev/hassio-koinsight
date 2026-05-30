@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# OpenOMS Go API server (bound to 0.0.0.0:8080 — exposed via HA port mapping).
+set -euo pipefail
+exec 2>&1
+
+# shellcheck disable=SC1091
+source /run/openoms/env
+
+# Defensive wait — migrate is a oneshot dependency, but Redis is a longrun that
+# may need a moment after the migrate succeeds.
+for _ in $(seq 1 30); do
+    if redis-cli -h 127.0.0.1 -p 6379 ping 2>/dev/null | grep -q PONG; then
+        break
+    fi
+    sleep 1
+done
+
+mkdir -p "${UPLOAD_DIR}"
+
+echo "[api-server] starting openoms-api on :8080"
+exec /usr/local/bin/openoms-api

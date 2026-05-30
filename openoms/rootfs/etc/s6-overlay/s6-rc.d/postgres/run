@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# PostgreSQL 17 — bundled DB for OpenOMS.
+# Cluster lives on the persistent /data volume so it survives restarts and rebuilds.
+set -euo pipefail
+exec 2>&1
+
+# shellcheck disable=SC1091
+source /run/openoms/env
+
+export PGDATA=/data/postgres
+mkdir -p "${PGDATA}" /run/postgresql
+chown -R postgres:postgres "${PGDATA}" /run/postgresql
+chmod 700 "${PGDATA}"
+
+if [[ ! -s "${PGDATA}/PG_VERSION" ]]; then
+    echo "[postgres] initializing cluster (first boot)…"
+    pwfile="$(mktemp)"
+    printf '%s' "${POSTGRES_PASSWORD}" > "${pwfile}"
+    chown postgres:postgres "${pwfile}"
+    chmod 600 "${pwfile}"
+
+    su-exec postgres initdb \
+        --pgdata="${PGDATA}" \
+        --username=openoms \
+        --auth-host=scram-sha-256 \
+        --auth-local=trust \
+        --pwfile="${pwfile}" \
+        --encoding=UTF8 \
+        --locale=C.UTF-8
+
+    rm -f "${pwfile}"
+
+    # Loopback-only. The Go API talks over 127.0.0.1; nothing else needs the socket.
+    {
+        echo "listen_addresses = '127.0.0.1'"
+        echo "port = 5432"
+        echo "shared_buffers = 128MB"
+        echo "max_connections = 100"
+        echo "password_encryption = scram-sha-256"
+        echo "log_min_messages = warning"
+    } >> "${PGDATA}/postgresql.conf"
+
+    cat > "${PGDATA}/pg_hba.conf" <<'HBA'
+# OpenOMS embedded Postgres — loopback only, password auth.
+local   all             all                                     trust
+host    all             all             127.0.0.1/32            scram-sha-256
+host    all             all             ::1/128                 scram-sha-256
+HBA
+fi
+
+echo "[postgres] starting PostgreSQL 17"
+exec su-exec postgres postgres -D "${PGDATA}"

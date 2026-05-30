@@ -1,0 +1,17 @@
+---
+# Base image for the wrapper layer. Alpine 3.21 ships:
+#   - postgresql17 / postgresql17-client / postgresql17-contrib
+#   - redis 7.x
+#   - nodejs 22.x (LTS) — required to run the upstream Next.js standalone bundle
+# Home Assistant supplies TARGETARCH for the build; arches map to amd64 / arm64.
+build_from:
+  aarch64: alpine:3.21
+  amd64: alpine:3.21
+args:
+  # Upstream pre-built multi-arch images.
+  # Override here to swap in a fork (e.g. ghcr.io/poltavtcev/openoms-api).
+  OPENOMS_API_IMAGE: ghcr.io/openoms-org/openoms-api
+  OPENOMS_DASHBOARD_IMAGE: ghcr.io/openoms-org/openoms-dashboard
+  OPENOMS_MIGRATE_IMAGE: ghcr.io/openoms-org/openoms-migrate
+  OPENOMS_VERSION: latest
+  S6_OVERLAY_VERSION: "3.2.0.2"
