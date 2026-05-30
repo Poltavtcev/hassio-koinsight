@@ -5,8 +5,8 @@
 #   - nodejs 22.x (LTS) — required to run the upstream Next.js standalone bundle
 # Home Assistant supplies TARGETARCH for the build; arches map to amd64 / arm64.
 build_from:
-  aarch64: alpine:3.21
-  amd64: alpine:3.21
+  aarch64: docker.io/library/alpine:3.21
+  amd64: docker.io/library/alpine:3.21
 args:
   # Upstream pre-built multi-arch images.
   # Override here to swap in a fork (e.g. ghcr.io/poltavtcev/openoms-api).

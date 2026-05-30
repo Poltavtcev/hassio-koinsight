@@ -9,12 +9,12 @@ ARG OPENOMS_API_IMAGE=ghcr.io/openoms-org/openoms-api
 ARG OPENOMS_DASHBOARD_IMAGE=ghcr.io/openoms-org/openoms-dashboard
 ARG OPENOMS_MIGRATE_IMAGE=ghcr.io/openoms-org/openoms-migrate
 ARG OPENOMS_VERSION=latest
+ARG BUILD_FROM=docker.io/library/alpine:3.21
 
 FROM ${OPENOMS_API_IMAGE}:${OPENOMS_VERSION} AS api
 FROM ${OPENOMS_DASHBOARD_IMAGE}:${OPENOMS_VERSION} AS dashboard
 FROM ${OPENOMS_MIGRATE_IMAGE}:${OPENOMS_VERSION} AS migrate
 
-ARG BUILD_FROM=alpine:3.21
 FROM ${BUILD_FROM}
 
 ARG TARGETARCH
