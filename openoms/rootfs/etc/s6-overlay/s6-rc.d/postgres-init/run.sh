@@ -9,29 +9,31 @@ set -euo pipefail
 # shellcheck disable=SC1091
 source /run/openoms/env
 
+# initdb was run with --username=openoms, so the cluster has no "postgres"
+# role — every psql/pg_isready call must specify -U openoms explicitly.
 echo "[postgres-init] waiting for cluster on 127.0.0.1:5432…"
 for _ in $(seq 1 60); do
-    if su-exec postgres pg_isready -h 127.0.0.1 -p 5432 -d postgres -q; then
+    if su-exec postgres pg_isready -h 127.0.0.1 -p 5432 -U openoms -d postgres -q; then
         break
     fi
     sleep 1
 done
 
-if ! su-exec postgres pg_isready -h 127.0.0.1 -p 5432 -d postgres -q; then
+if ! su-exec postgres pg_isready -h 127.0.0.1 -p 5432 -U openoms -d postgres -q; then
     echo "[postgres-init] FATAL: postgres did not become ready in time" >&2
     exit 1
 fi
 
-# Ensure the application database exists.
-db_exists=$(su-exec postgres psql -tAXc "SELECT 1 FROM pg_database WHERE datname='openoms'" postgres)
+# Ensure the application database exists. Use the local Unix socket + the
+# "local all all trust" line installed by initdb, so no password is needed.
+db_exists=$(su-exec postgres psql -U openoms -d postgres -tAXc "SELECT 1 FROM pg_database WHERE datname='openoms'")
 if [[ -z "${db_exists}" ]]; then
     echo "[postgres-init] creating database 'openoms'"
-    su-exec postgres psql -v ON_ERROR_STOP=1 -d postgres -c "CREATE DATABASE openoms OWNER openoms;"
+    su-exec postgres psql -U openoms -v ON_ERROR_STOP=1 -d postgres -c "CREATE DATABASE openoms OWNER openoms;"
 fi
 
 # Ensure the least-privilege application role exists, and (re)set its password.
-PGPASSWORD="${POSTGRES_PASSWORD}" \
-    psql -v ON_ERROR_STOP=1 -h 127.0.0.1 -U openoms -d openoms \
+su-exec postgres psql -U openoms -v ON_ERROR_STOP=1 -d openoms \
          -v app_password="${POSTGRES_APP_PASSWORD}" <<'EOSQL'
 DO $$
 BEGIN
