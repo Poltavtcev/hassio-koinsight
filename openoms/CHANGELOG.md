@@ -2,6 +2,16 @@
 
 All notable changes to the OpenOMS add-on are documented here.
 
+## 0.1.1
+
+- Add `registration_mode` option (`open` / `invite` / `closed`) exposed through
+  the add-on Configuration tab and forwarded to the API as `REGISTRATION_MODE`.
+  Default stays `open` so the first admin can be bootstrapped via
+  `POST /v1/auth/register`; flip to `closed` afterwards to disable public
+  signup (the upstream dashboard has no UI for open registration).
+- README: replaced the "guided onboarding wizard" instructions with the actual
+  one-shot `curl` bootstrap recipe + post-bootstrap lockdown step.
+
 ## 0.1.0 — Initial release
 
 - First Home Assistant packaging of [OpenOMS](https://github.com/openoms-org/openoms).

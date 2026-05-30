@@ -98,6 +98,7 @@ FEATURE_ALLEGRO="$(opt feature_allegro "true")"
 FEATURE_INPOST="$(opt feature_inpost "true")"
 WORKERS_ENABLED="$(opt workers_enabled "true")"
 LOG_LEVEL="$(opt log_level "info")"
+REGISTRATION_MODE="$(opt registration_mode "open")"
 
 # DSNs for the bundled Postgres. Both connect over the local loopback.
 # Encode passwords because base64-style secrets in legacy /data/secrets.env
@@ -134,6 +135,7 @@ export FEATURE_ALLEGRO='${FEATURE_ALLEGRO}'
 export FEATURE_INPOST='${FEATURE_INPOST}'
 export WORKERS_ENABLED='${WORKERS_ENABLED}'
 export LOG_LEVEL='${LOG_LEVEL}'
+export REGISTRATION_MODE='${REGISTRATION_MODE}'
 export PORT='8080'
 export ENV='production'
 export NODE_ENV='production'

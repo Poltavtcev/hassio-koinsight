@@ -64,6 +64,7 @@ persisted to `/data/secrets.env`. Override only if you have to.
 | `feature_allegro` / `feature_inpost` | toggle | turn integration modules off without removing creds |
 | `workers_enabled` | toggle | run background workers in this container |
 | `log_level` | optional | `debug` / `info` / `warning` / `error` |
+| `registration_mode` | recommended | `open` (default; needed for first-run bootstrap), `invite` (token required), `closed` (lock down public registration) |
 
 > Rotating secrets: change the value in the add-on UI and restart — the new
 > value overwrites `/data/secrets.env`. The Postgres role password is updated
@@ -71,11 +72,41 @@ persisted to `/data/secrets.env`. Override only if you have to.
 
 ## First-run admin account
 
-There is **no default production password** (unlike `task seed` in upstream
-dev mode). After first start, complete the **guided onboarding wizard** at
-the dashboard URL to create the first organisation + admin user, or use the
-registration / invite / license-token flow described in upstream
-[`CHANGELOG.md`](https://github.com/openoms-org/openoms/blob/main/CHANGELOG.md).
+The upstream dashboard's `/register` page is a SaaS-oriented pricing screen —
+if Stripe billing is not configured (and in this self-hosted add-on it isn't),
+it redirects to `/register/invite` and refuses to register anyone without an
+invite/license token. There is no UI path for plain open registration.
+
+The bundled Go API does support open registration when `registration_mode` is
+`open` (the default for this add-on). **Bootstrap the first admin via a
+single API call**, then switch the mode to `closed` so the open endpoint is
+no longer exposed:
+
+```bash
+curl -i -X POST 'https://<your-host>/v1/auth/register' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "email": "admin@example.com",
+    "password": "ChangeMe123!",
+    "name": "Admin",
+    "language": "en",
+    "tenant_name": "My Company",
+    "tenant_slug": "my-company"
+  }'
+```
+
+Field requirements (enforced by the API):
+
+- `password` ≥ 8 chars, must include at least one uppercase letter and one digit;
+- `tenant_slug` matches `^[a-z0-9-]+$`;
+- `language` is `pl` or `en` (or omit).
+
+A successful call returns `201 Created` with a JWT. Then log in at the
+dashboard with the **tenant slug**, email and password.
+
+After the first admin exists, set `registration_mode: closed` in the add-on
+Configuration tab and restart — this disables the public registration
+endpoint. Invite further users from inside the dashboard.
 
 ## Updating
 

@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: OpenOMS
-version: "0.1.0"
+version: "0.1.1"
 slug: openoms
 description: >-
   OpenOMS — Open-source Order Management System (Allegro, InPost, DHL, DPD, GLS,
@@ -40,6 +40,7 @@ options:
   feature_inpost: true
   workers_enabled: true
   log_level: "info"
+  registration_mode: "open"
 schema:
   postgres_password: password?
   postgres_app_password: password?
@@ -61,6 +62,7 @@ schema:
   feature_inpost: bool
   workers_enabled: bool
   log_level: list(debug|info|warning|error)?
+  registration_mode: list(open|invite|closed)?
 ports:
   3000/tcp: 3000
   8080/tcp: 8080
