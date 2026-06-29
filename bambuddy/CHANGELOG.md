@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.3.3] - 2026-06-29
+
+- **Fix fork image never applied on Rebuild:** Dockerfile now uses `ARG BUILD_FROM` / `FROM ${BUILD_FROM}` (Supervisor passes `build_from` from `build.yaml`). Previously `FROM ${BAMBUDDY_IMAGE}` relied on a mistyped `arg:` key (`args:` is required), so every Rebuild silently used upstream `ghcr.io/maziggy/bambuddy` despite add-on changelog showing the fork.
+
 ## [1.3.2] - 2026-06-29
 
 - Active image: **`ghcr.io/poltavtcev/bambuddy:latest`** (fork with storage locations Phase 2).

@@ -1,10 +1,6 @@
 ---
-# Upstream image (maziggy/bambuddy). Active default — same as build.yaml.
-# To restore after using the fork preset:
+# Upstream image (maziggy/bambuddy). To restore after using the fork preset:
 #   cp bambuddy/build.upstream.yaml bambuddy/build.yaml
 build_from:
   aarch64: ghcr.io/maziggy/bambuddy:latest
   amd64: ghcr.io/maziggy/bambuddy:latest
-arg:
-  BAMBUDDY_IMAGE: ghcr.io/maziggy/bambuddy
-  BAMBUDDY_VERSION: latest

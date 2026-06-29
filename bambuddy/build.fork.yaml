@@ -5,6 +5,3 @@
 build_from:
   aarch64: ghcr.io/poltavtcev/bambuddy:latest
   amd64: ghcr.io/poltavtcev/bambuddy:latest
-arg:
-  BAMBUDDY_IMAGE: ghcr.io/poltavtcev/bambuddy
-  BAMBUDDY_VERSION: latest

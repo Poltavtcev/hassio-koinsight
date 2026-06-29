@@ -1,11 +1,10 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
 #
 # Thin HA wrapper — pulls pre-built BamBuddy image (see bambuddy/build.yaml).
-# Default: upstream ghcr.io/maziggy/bambuddy. Fork: cp build.fork.yaml → build.yaml.
-ARG BAMBUDDY_IMAGE=ghcr.io/maziggy/bambuddy
-ARG BAMBUDDY_VERSION=latest
-
-FROM ${BAMBUDDY_IMAGE}:${BAMBUDDY_VERSION}
+# Supervisor passes BUILD_FROM from build.yaml build_from; default below is the fork.
+# Upstream: cp bambuddy/build.upstream.yaml bambuddy/build.yaml
+ARG BUILD_FROM=ghcr.io/poltavtcev/bambuddy:latest
+FROM ${BUILD_FROM}
 
 LABEL org.opencontainers.image.title="Home Assistant Add-on: Bambuddy"
 LABEL org.opencontainers.image.description="BamBuddy wrapper — Rebuild pulls image from build.yaml (upstream or fork)."
