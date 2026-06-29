@@ -8,7 +8,7 @@ on:
       ref:
         description: Branch on Poltavtcev/bambuddy
         required: false
-        default: feature/printer-temperature-fan-controls
+        default: main
 
 permissions:
   contents: read

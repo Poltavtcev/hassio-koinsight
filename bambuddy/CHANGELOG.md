@@ -2,6 +2,11 @@
 
 # Changelog
 
+## [1.3.2] - 2026-06-29
+
+- Active image: **`ghcr.io/poltavtcev/bambuddy:latest`** (fork with storage locations Phase 2).
+- Workflow **Publish BamBuddy fork image** default branch → `main`.
+
 ## [1.3.1] - 2026-06-11
 
 - Default image back to upstream **`ghcr.io/maziggy/bambuddy:latest`** (Rebuild only — no publish workflow).
