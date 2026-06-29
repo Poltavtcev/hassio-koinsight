@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [1.3.5] - 2026-06-29
+
+- **Remove `build.yaml`** — deprecated on Supervisor 2026.04+. It was still injecting `--build-arg BUILD_FROM=ghcr.io/maziggy/bambuddy:latest` on Rebuild (stale/wrong), overriding the fork even when `config.yaml` already showed 1.3.x. Base image is only the Dockerfile `FROM` line now.
+
 ## [1.3.4] - 2026-06-29
 
 - **Hardcode `FROM ghcr.io/poltavtcev/bambuddy:latest`** in the Dockerfile (no `ARG BUILD_FROM` / build-args). Newer Supervisor builds no longer reliably inject `BUILD_FROM` from `build.yaml`.

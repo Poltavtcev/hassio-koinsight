@@ -99,6 +99,8 @@ Each URL gets its own store id in Supervisor; a mismatch breaks changelog / upda
 GitHub `main` is the source of truth:  
 `https://raw.githubusercontent.com/Poltavtcev/hassio-koinsight/main/bambuddy/config.yaml`
 
+**Bambuddy Rebuild but still upstream / no Phase 2 UI?** In **Supervisor** logs, search the `docker buildx build` line for BamBuddy. If you see `--build-arg BUILD_FROM=ghcr.io/maziggy/bambuddy:latest`, Supervisor’s deprecated `build.yaml` path overrode the fork (common on Supervisor 2026.04+). **Bambuddy 1.3.5+** removes `build.yaml` and hardcodes `FROM ghcr.io/poltavtcev/bambuddy:latest` in the Dockerfile — after updating the repo, **Rebuild** again and check the add-on **Log** tab for `fork image detected (storage locations Phase 2 API present)`.
+
 **`Failed to rebuild app` / `App …_bambuddy is not available inside store`?**  
 Supervisor stores each installed add-on against an internal store id (`<repo-hash>_<slug>`). If you **removed and re-added** this repository, **switched forks**, or Supervisor refreshed its git index, the **installed** Bambuddy entry can still point at an **old** store id — then **Rebuild**, **Update**, and **Changelog** fail even though the add-on appears in the UI.
 
@@ -129,7 +131,7 @@ After a fresh install, **Rebuild** should work. Your BamBuddy database/files nor
 **Bambuddy**
 
 - 🖨️ Bambu Lab workflow helpers (archive, virtual printer on host network where configured)  
-- 🔁 **Rebuild** pulls the current upstream **`latest`** image  
+- 🔁 **Rebuild** pulls **`ghcr.io/poltavtcev/bambuddy:latest`** (fork; run **Publish BamBuddy fork image** when the fork code changes)  
 
 **OpenOMS**
 

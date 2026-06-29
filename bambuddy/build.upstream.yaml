@@ -1,6 +1,5 @@
 ---
-# Upstream image (maziggy/bambuddy). To restore after using the fork preset:
-#   cp bambuddy/build.upstream.yaml bambuddy/build.yaml
-build_from:
-  aarch64: ghcr.io/maziggy/bambuddy:latest
-  amd64: ghcr.io/maziggy/bambuddy:latest
+# Legacy reference only. To use upstream maziggy instead of the fork:
+#   1. Edit bambuddy/Dockerfile — change FROM to ghcr.io/maziggy/bambuddy:latest
+#   2. Rebuild the add-on on Home Assistant
+# Do NOT restore build.yaml — deprecated Supervisor file can force BUILD_FROM=maziggy.

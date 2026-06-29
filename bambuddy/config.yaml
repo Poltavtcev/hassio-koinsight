@@ -1,10 +1,10 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Bambuddy (rolling)
-version: "1.3.4"
+version: "1.3.5"
 slug: bambuddy
 description: >-
   BamBuddy from fork ghcr.io/poltavtcev/bambuddy (storage locations Phase 2). Run "Publish BamBuddy
-  fork image" when the fork changes, then Rebuild. For upstream: copy build.upstream.yaml to build.yaml.
+  fork image" when the fork changes, then Rebuild. For upstream: edit FROM in bambuddy/Dockerfile.
   Host networking for virtual printer LAN ports.
 url: "https://github.com/Poltavtcev/hassio-koinsight"
 arch:
