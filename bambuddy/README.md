@@ -1,22 +1,33 @@
 # Bambuddy (rolling)
 
-Home Assistant add-on for **[Poltavtcev/bambuddy](https://github.com/Poltavtcev/bambuddy)** (your fork).
+Home Assistant add-on wrapper around pre-built BamBuddy images (fast **Rebuild** on HA).
 
-Pulls **`ghcr.io/poltavtcev/bambuddy:latest`** — fast **Rebuild** on HA (no pip compile on the host).
+**Default (active `build.yaml`):** upstream **[maziggy/bambuddy](https://github.com/maziggy/bambuddy)** → `ghcr.io/maziggy/bambuddy:latest`
 
-## First time (or after you change the fork)
+**Fork preset:** [`build.fork.yaml`](./build.fork.yaml) → `ghcr.io/poltavtcev/bambuddy:latest`  
+**Upstream preset:** [`build.upstream.yaml`](./build.upstream.yaml) (same as active `build.yaml`)
 
-1. Open **https://github.com/Poltavtcev/hassio-koinsight/actions**
-2. Run workflow **Publish BamBuddy fork image** (default branch: `feature/printer-temperature-fan-controls`)
-3. Wait until it finishes (green). If HA cannot pull the image, set the package **public**: GitHub → Packages → bambuddy → Public
+## Upstream (default)
 
-## On Home Assistant
-
-1. Refresh add-on repository
-2. **Bambuddy → Rebuild** (version **1.3.0**+)
+1. Refresh add-on repository on HA
+2. **Bambuddy → Rebuild**
 3. **Start** — `http://<home-assistant-ip>:8480`
 
-## After you push changes to the fork
+No GitHub Actions needed — Rebuild pulls the latest upstream image from GHCR.
 
-1. Run **Publish BamBuddy fork image** again (same workflow)
-2. **Rebuild** the add-on on HA
+## Switch to your fork
+
+```bash
+cp bambuddy/build.fork.yaml bambuddy/build.yaml
+```
+
+Commit, push, then:
+
+1. Run [**Publish BamBuddy fork image**](https://github.com/Poltavtcev/hassio-koinsight/actions/workflows/publish-bambuddy-fork.yml) (if the fork image is stale)
+2. Refresh repo on HA → **Rebuild**
+
+To switch back to upstream:
+
+```bash
+cp bambuddy/build.upstream.yaml bambuddy/build.yaml
+```

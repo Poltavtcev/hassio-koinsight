@@ -2,6 +2,11 @@
 
 # Changelog
 
+## [1.3.1] - 2026-06-11
+
+- Default image back to upstream **`ghcr.io/maziggy/bambuddy:latest`** (Rebuild only — no publish workflow).
+- Add **`build.fork.yaml`** preset for **`ghcr.io/poltavtcev/bambuddy`** — copy over `build.yaml` to use the fork again.
+
 ## [1.3.0] - 2026-05-20
 
 - Pull **`ghcr.io/poltavtcev/bambuddy`** (fork https://github.com/Poltavtcev/bambuddy), not maziggy.

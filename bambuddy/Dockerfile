@@ -1,14 +1,14 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-dockerfile
 #
-# Thin HA wrapper — pulls YOUR fork image (fast Rebuild on Home Assistant).
-# Image is built from https://github.com/Poltavtcev/bambuddy (see publish workflow in this repo).
-ARG BAMBUDDY_IMAGE=ghcr.io/poltavtcev/bambuddy
+# Thin HA wrapper — pulls pre-built BamBuddy image (see bambuddy/build.yaml).
+# Default: upstream ghcr.io/maziggy/bambuddy. Fork: cp build.fork.yaml → build.yaml.
+ARG BAMBUDDY_IMAGE=ghcr.io/maziggy/bambuddy
 ARG BAMBUDDY_VERSION=latest
 
 FROM ${BAMBUDDY_IMAGE}:${BAMBUDDY_VERSION}
 
 LABEL org.opencontainers.image.title="Home Assistant Add-on: Bambuddy"
-LABEL org.opencontainers.image.description="BamBuddy from Poltavtcev/bambuddy fork — Rebuild to pull newer image."
+LABEL org.opencontainers.image.description="BamBuddy wrapper — Rebuild pulls image from build.yaml (upstream or fork)."
 LABEL org.opencontainers.image.source="https://github.com/Poltavtcev/hassio-koinsight"
 LABEL org.opencontainers.image.licenses="AGPL-3.0"
 

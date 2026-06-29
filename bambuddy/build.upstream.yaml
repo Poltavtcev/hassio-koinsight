@@ -1,6 +1,7 @@
 ---
-# Upstream image (maziggy/bambuddy). Rebuild on HA pulls ghcr.io/maziggy/bambuddy:latest.
-# For your fork instead: cp bambuddy/build.fork.yaml bambuddy/build.yaml
+# Upstream image (maziggy/bambuddy). Active default — same as build.yaml.
+# To restore after using the fork preset:
+#   cp bambuddy/build.upstream.yaml bambuddy/build.yaml
 build_from:
   aarch64: ghcr.io/maziggy/bambuddy:latest
   amd64: ghcr.io/maziggy/bambuddy:latest

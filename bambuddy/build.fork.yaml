@@ -1,0 +1,10 @@
+---
+# Fork image (Poltavtcev/bambuddy). To use:
+#   cp bambuddy/build.fork.yaml bambuddy/build.yaml
+# Then run workflow "Publish BamBuddy fork image", commit, push, Rebuild on HA.
+build_from:
+  aarch64: ghcr.io/poltavtcev/bambuddy:latest
+  amd64: ghcr.io/poltavtcev/bambuddy:latest
+arg:
+  BAMBUDDY_IMAGE: ghcr.io/poltavtcev/bambuddy
+  BAMBUDDY_VERSION: latest
