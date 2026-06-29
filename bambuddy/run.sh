@@ -68,5 +68,12 @@ echo "data: $(readlink -f /app/data 2>/dev/null || echo /app/data)"
 echo "logs: $(readlink -f /app/logs 2>/dev/null || echo /app/logs)"
 echo "PORT=${PORT}  PUID=${PUID}  PGID=${PGID}"
 
+# Helps confirm the running container is the fork image (not a stale upstream layer).
+if grep -q 'location-history' /app/backend/app/api/routes/inventory.py 2>/dev/null; then
+  echo "INFO: BamBuddy fork image detected (storage locations Phase 2 API present)"
+else
+  echo "WARN: BamBuddy upstream image — no location-history routes; Rebuild did not pull ghcr.io/poltavtcev/bambuddy"
+fi
+
 exec /usr/local/bin/docker-entrypoint.sh \
   sh -c 'uvicorn backend.app.main:app --host 0.0.0.0 --port ${PORT:-8480} --loop asyncio'

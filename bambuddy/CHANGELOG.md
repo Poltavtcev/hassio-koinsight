@@ -2,6 +2,11 @@
 
 # Changelog
 
+## [1.3.4] - 2026-06-29
+
+- **Hardcode `FROM ghcr.io/poltavtcev/bambuddy:latest`** in the Dockerfile (no `ARG BUILD_FROM` / build-args). Newer Supervisor builds no longer reliably inject `BUILD_FROM` from `build.yaml`.
+- **Startup log line** reports whether the running container includes Phase 2 (`location-history` routes) — check the add-on **Log** tab after Rebuild.
+
 ## [1.3.3] - 2026-06-29
 
 - **Fix fork image never applied on Rebuild:** Dockerfile now uses `ARG BUILD_FROM` / `FROM ${BUILD_FROM}` (Supervisor passes `build_from` from `build.yaml`). Previously `FROM ${BAMBUDDY_IMAGE}` relied on a mistyped `arg:` key (`args:` is required), so every Rebuild silently used upstream `ghcr.io/maziggy/bambuddy` despite add-on changelog showing the fork.
