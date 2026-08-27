@@ -7,6 +7,7 @@ ARG KOINSIGHT_REF=master
 
 RUN apk add --no-cache git python3 make g++
 
+ARG BUILD_VERSION=0.4.3
 WORKDIR /src
 RUN git clone -- "${KOINSIGHT_REPO}" . \
   && git checkout "${KOINSIGHT_REF}"
