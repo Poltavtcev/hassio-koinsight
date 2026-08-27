@@ -1,4 +1,0 @@
-# Home Assistant passes these as docker build-args. Rebuild the add-on after changes.
-args:
-  LINKI_REPO: https://github.com/moaljumaa/linki.git
-  LINKI_REF: main
