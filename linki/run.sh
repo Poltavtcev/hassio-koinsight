@@ -6,6 +6,8 @@ if [ -f "$CONFIG_FILE" ]; then
   NEXTAUTH_URL=$(jq -r '.nextauth_url // empty' "$CONFIG_FILE")
   NEXTAUTH_SECRET=$(jq -r '.nextauth_secret // empty' "$CONFIG_FILE")
   AUTH_PASSWORD=$(jq -r '.auth_password // empty' "$CONFIG_FILE")
+  OPENAI_API_KEY=$(jq -r '.openai_api_key // empty' "$CONFIG_FILE")
+  AI_REPLY_INTELLIGENCE=$(jq -r '.ai_reply_intelligence // empty' "$CONFIG_FILE")
 fi
 
 if [ -z "$NEXTAUTH_URL" ] || [ "$NEXTAUTH_URL" == "null" ]; then
@@ -24,6 +26,8 @@ fi
 export NEXTAUTH_URL
 export NEXTAUTH_SECRET
 export AUTH_PASSWORD
+export OPENAI_API_KEY
+export AI_REPLY_INTELLIGENCE
 export LINKI_DB_PATH="/data/linki.db"
 
 echo "[INFO] Starting Linki..."

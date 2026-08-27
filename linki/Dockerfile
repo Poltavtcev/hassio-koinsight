@@ -33,7 +33,7 @@ RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/2
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
-ARG LINKI_REPO=https://github.com/moaljumaa/linki.git
+ARG LINKI_REPO=https://github.com/Poltavtcev/linki.git
 ARG LINKI_REF=main
 
 WORKDIR /src

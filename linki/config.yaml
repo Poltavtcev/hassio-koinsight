@@ -1,5 +1,5 @@
 name: "Linki"
-version: "0.1.0"
+version: "0.1.1"
 slug: linki
 description: "Open-source AI SDR for B2B outreach. LinkedIn sequences, cold email, and lead enrichment."
 url: "https://github.com/moaljumaa/linki"
@@ -18,7 +18,11 @@ options:
   nextauth_url: "http://homeassistant.local:3000"
   nextauth_secret: "generate_a_random_secret_here"
   auth_password: "change_me"
+  openai_api_key: ""
+  ai_reply_intelligence: "true"
 schema:
   nextauth_url: str
   nextauth_secret: password
   auth_password: password
+  openai_api_key: str?
+  ai_reply_intelligence: str?
