@@ -26,6 +26,7 @@ RUN echo "deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/2
   xdg-utils \
   git \
   ca-certificates \
+  curl \
   jq \
   bash \
   && rm -rf /var/lib/apt/lists/*
@@ -35,10 +36,10 @@ ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
 ARG LINKI_REPO=https://github.com/Poltavtcev/linki.git
 ARG LINKI_REF=main
-ARG BUILD_VERSION=0.1.9.34
+ARG BUILD_VERSION=0.1.9.35
 WORKDIR /src
-RUN git -c protocol.version=0 clone -- "${LINKI_REPO}" . \
-  && git checkout "${LINKI_REF}"
+RUN curl -L "https://github.com/Poltavtcev/linki/archive/refs/heads/${LINKI_REF}.tar.gz" \
+    | tar -xz --strip-components=1
 
 RUN npm ci
 RUN npm run build
