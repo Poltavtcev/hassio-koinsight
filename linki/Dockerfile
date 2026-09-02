@@ -35,7 +35,7 @@ ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
 ARG LINKI_REPO=https://github.com/Poltavtcev/linki.git
 ARG LINKI_REF=main
-ARG BUILD_VERSION=0.1.9.31
+ARG BUILD_VERSION=0.1.9.32
 WORKDIR /src
 RUN git clone -- "${LINKI_REPO}" . \
   && git checkout "${LINKI_REF}"
