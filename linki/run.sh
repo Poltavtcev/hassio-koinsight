@@ -28,7 +28,15 @@ export NEXTAUTH_SECRET
 export AUTH_PASSWORD
 export OPENAI_API_KEY
 export AI_REPLY_INTELLIGENCE
-export LINKI_DB_PATH="/data/linki.db"
+
+# Database migration to shared folder
+mkdir -p /share/linki
+if [ ! -f "/share/linki/linki.db" ] && [ -f "/data/linki.db" ]; then
+  echo "[INFO] Migrating existing database to /share/linki/linki.db..."
+  cp -p /data/linki.db /share/linki/linki.db
+fi
+
+export LINKI_DB_PATH="/share/linki/linki.db"
 
 echo "[INFO] Starting Linki..."
 echo "[INFO] URL: $NEXTAUTH_URL"
