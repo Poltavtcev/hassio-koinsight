@@ -36,7 +36,7 @@ ENV PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/chromium
 
 ARG LINKI_REPO=https://github.com/Poltavtcev/linki.git
 ARG LINKI_REF=main
-ARG BUILD_VERSION=0.1.9.54
+ARG BUILD_VERSION=0.1.9.55
 WORKDIR /src
 RUN curl -L "https://github.com/Poltavtcev/linki/archive/refs/heads/${LINKI_REF}.tar.gz" \
     | tar -xz --strip-components=1
