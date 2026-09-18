@@ -1,0 +1,18 @@
+name: "Bambu Studio Sidecar"
+version: "1.0.0"
+slug: bambu_studio_api
+description: >-
+  Bambu Studio Slicer API Sidecar for BamBuddy. Performs server-side slicing.
+url: "https://github.com/Poltavtcev/hassio-koinsight"
+arch:
+  - aarch64
+  - amd64
+init: false
+options:
+  port: 8080
+schema:
+  port: int
+ports:
+  8080/tcp: 8481
+webui: http://[HOST]:[PORT:8080]
+watchdog: http://[HOST]:[PORT:8080]/health
