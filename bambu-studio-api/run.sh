@@ -12,5 +12,7 @@ export PORT
 echo "=== Bambu Studio Sidecar (Home Assistant add-on) ==="
 echo "PORT=${PORT}"
 
+mkdir -p /app/data
+
 # Run the API
 exec node /app/dist/index.js

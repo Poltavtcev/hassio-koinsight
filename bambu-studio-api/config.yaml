@@ -1,5 +1,5 @@
 name: "Bambu Studio Sidecar"
-version: "1.0.1"
+version: "1.0.2"
 slug: bambu_studio_api
 description: >-
   Bambu Studio Slicer API Sidecar for BamBuddy. Performs server-side slicing.
