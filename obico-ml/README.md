@@ -1,6 +1,9 @@
-# Obico ML Home Assistant Addon
-HA Addon for [Obico ML REST API server integration](https://github.com/nobodyguy/obico_ml_ha_integration).
+# Obico ML Home Assistant Add-on
 
-[![Open your Home Assistant instance and show the add add-on repository dialog with a specific repository URL pre-filled.](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2Fnobodyguy%2Fobico_ml_ha_addon)
+This Add-on provides the ML API component for Obico, integrated directly into Home Assistant.
+It automatically pulls and builds from the latest official Obico ML API image (`ghcr.io/gabe565/obico/ml-api:latest`), ensuring you have the most up-to-date analysis logic.
 
-Based on https://github.com/TheSpaghettiDetective/obico-server and https://github.com/hassio-addons/addon-ubuntu-base
+### Usage
+This add-on exposes port 3333 by default. You can point your Obico server or Home Assistant integrations to `http://[YOUR_HA_IP]:3333`.
+
+Based on the [official Obico project](https://github.com/TheSpaghettiDetective/obico-server) and the community Obico ML HA integration.
